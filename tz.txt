@@ -1,0 +1,135 @@
+Функционал
+
+- авторизация по номеру тефона
+- список товаров
+- одинтовар
+- корзина
+- поиск и фильтр
+- оплата
+    - онлайн
+    - без нал.
+    - по месту доставки
+- отзывы
+- оценка товара
+- чат поддержки
+- рассылка смс с акциями
+
+
+
+БД
+
+Category
+name - char
+url
+
+Product
+name - char
+description - text
+price - decimal
+category - FK Category
+url - Slug
+
+Image
+link - url
+product - FK Product
+
+
+Item
+product - FK Product
+count - int
+basket - FK Basket
+
+Basket
+total_price - decimal
+user - FK User
+is_active - bool
+
+Order
+basket - FK Basket
+date - date
+method_pay
+status
+
+
+Pay
+payment_method - CharField(Field)?
+address - FK Address
+
+Address
+user - FK User
+town
+street
+house
+
+User
+phone - PhoneNumberField or Char with validator?
+
+Star for product
+ip - IP
+star - FK
+product - FK
+
+Star
+star Int
+
+Reviews
+description - text
+user - FK User
+product - FK product
+
+Room
+number - int
+admin - FK User
+user - OTO User
+
+Message
+room - FK Room
+user - FK User
+text - txt
+date - DateTimeField
+is_active - bool
+
+
+
+Tools
+DRF
+Django-channels
+django-filters
+
+celery
+
+redis
+postgres
+
+docker
+
+
+TZ
+дописать БД
+создаем проект
+заводим git
+
+
+Shop
+Категории
+Товар
+Корзина
+Заказ
+Оплата
+
+Авторизация по смс
+рассширить модель User добавить поле phone
+
+Подготовить docker
+Поиск и фильтр товара
+
+отзывы
+оценка товара
+
+чат поддержки
+рассылка смс с акциями
+
+models
+serializers
+views
+admin
