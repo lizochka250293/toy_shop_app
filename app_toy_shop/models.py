@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 from app_toy_shop.validators import phone_validator
@@ -48,8 +49,7 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
-    class Meta:
-        app_label = 'user'
+
 
 
 class Basket(models.Model):
@@ -78,7 +78,7 @@ class Item(models.Model):
         verbose_name_plural = 'Позиции'
 
 
-class Address:
+class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', related_name="user_address")
     town = models.CharField('Город', max_length=30)
     street = models.CharField('Улица', max_length=30, null=True)
@@ -93,7 +93,7 @@ class Address:
         verbose_name_plural = 'Адреса'
 
 
-class Pay:
+class Pay(models.Model):
     METHOD_PAY_CHOICES = [
         ('cash_delivery', 'Наличные курьеру'),
         ('card', 'Картой на сайте'),
@@ -156,6 +156,7 @@ class Reviews(models.Model):
     description = models.TextField('Отзыв')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Пользователь',
                              related_name="user_reviews")
+    created = models.DateTimeField('Дата создания', auto_now_add=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Продукт',
                                 related_name="product_reviews")
 
