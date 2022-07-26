@@ -21,6 +21,7 @@ class Product(models.Model):
     name = models.CharField('Название', max_length=70)
     description = models.TextField('Описание')
     price = models.DecimalField('Цена', max_digits=7, decimal_places=2)
+    image = models.ImageField("Постер", upload_to="photos/", blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name='Категория',
                                  related_name="category_product")
     url = models.SlugField(max_length=170, unique=True)

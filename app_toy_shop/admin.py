@@ -23,12 +23,18 @@ class ToyImage(admin.TabularInline):
     get_image.short_description = 'Изображение'
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'price', 'is_active']
+    list_display = ['name', 'price', 'get_image', 'is_active']
     list_display_links = ['name']
     search_fields = ['name', 'category__name']
     list_editable = ('is_active',)
     inlines = [ToyImage, RewiewInline]
     save_on_top = True
+    readonly_fields = ('get_image',)
+
+    def get_image(self, obj):
+        return mark_safe(f'<img src={obj.image.url} width="100" height="110"')
+
+    get_image.short_description = 'Постер'
 
 class ImageAdmin(admin.ModelAdmin):
     list_display = ['link', 'product', 'get_image']
