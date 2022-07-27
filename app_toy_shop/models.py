@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.urls import reverse
 
 from app_toy_shop.validators import phone_validator
 
@@ -21,7 +22,7 @@ class Product(models.Model):
     name = models.CharField('Название', max_length=70)
     description = models.TextField('Описание')
     price = models.DecimalField('Цена', max_digits=7, decimal_places=2)
-    image = models.ImageField("Постер", upload_to="photos/", blank=True)
+    poster = models.ImageField("Постер", upload_to="photos/", blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name='Категория',
                                  related_name="category_product")
     url = models.SlugField(max_length=170, unique=True)
@@ -29,6 +30,9 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('toy_delail', kwargs={'slug': self.url})
 
     class Meta:
         verbose_name = 'Товар'
@@ -167,7 +171,7 @@ class Reviews(models.Model):
     class Meta:
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
-        ordering = ('created',)
+        ordering = ('-created',)
 
 
 class Room(models.Model):

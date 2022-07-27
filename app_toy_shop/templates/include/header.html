@@ -1,0 +1,20 @@
+<div id="wrapper">
+		<header>
+			{% if request.user.is_authenticated %}
+			<li class="last"> {{user.username}} | <a href="{% url 'logout' %}">Выйти</a></li>
+			{% else %}
+			<li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>
+			{% endif %}
+		</header>
+		<nav>
+			<ul class="top-menu">
+				<li><a href="{% url 'title' %}">Главная</a></li>
+				<li class="active">О магазине</li>
+				<li><a href="/services/">Адреса</a></li>
+				<li><a href="/partners/">Контакты</a></li>
+				<li><a href="/customers/">Доставка</a></li>
+				<li><a href="/projects/">Возврат</a></li>
+				<li><a href="/careers/">Корзина</a></li>
+			</ul>
+		</nav>
+</div>
