@@ -69,7 +69,7 @@ class FilterProductView(GetCategory, ListView):
     template_name = 'toy_shop/title.html'
 
     def get_queryset(self):
-        queryset = Product.objects.filter(category__in=self.request.GET.getlist('category'))
+        queryset = Product.objects.filter(category__name__in=self.request.GET.getlist('category'))
         print(queryset)
         return queryset
 
