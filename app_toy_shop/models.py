@@ -1,13 +1,9 @@
-from django.contrib.auth.models import AbstractUser
-from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.urls import reverse
 
-from app_toy_shop.validators import phone_validator
-
 
 class Category(models.Model):
-    name = models.CharField('Категория', max_length=70)
+    name = models.CharField('Категория', max_length=70, db_index=True)
     url = models.SlugField(max_length=170, unique=True)
 
     def __str__(self):
@@ -48,18 +44,9 @@ class Image(models.Model):
         verbose_name_plural = 'Изображения'
 
 
-class User(AbstractUser):
-    phone = models.CharField('телефон', validators=[phone_validator], max_length=13)
-
-    def __str__(self):
-        return self.username
-
-
-
-
 class Basket(models.Model):
     total_price = models.DecimalField('Окончательная цена', max_digits=5, decimal_places=2)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', related_name="user_basket")
+    user = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name='Пользователь', related_name="user_basket")
     is_active = models.BooleanField('Активность', default=True)
 
     def __str__(self):
@@ -84,7 +71,7 @@ class Item(models.Model):
 
 
 class Address(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', related_name="user_address")
+    user = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name='Пользователь', related_name="user_address")
     town = models.CharField('Город', max_length=30)
     street = models.CharField('Улица', max_length=30, null=True)
     house = models.CharField('Дом', max_length=30)
@@ -137,11 +124,12 @@ class Star(models.Model):
     star = models.PositiveSmallIntegerField('Звезда', default=1)
 
     def __str__(self):
-        return self.star
+        return f'{self.star}'
 
     class Meta:
         verbose_name = 'Звезда'
         verbose_name_plural = 'Звезды'
+        ordering = ['-star']
 
 
 class StarForProduct(models.Model):
@@ -159,7 +147,7 @@ class StarForProduct(models.Model):
 
 class Reviews(models.Model):
     description = models.TextField('Отзыв')
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Пользователь',
+    user = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True, verbose_name='Пользователь',
                              related_name="user_reviews")
     created = models.DateTimeField('Дата создания', auto_now_add=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Продукт',
@@ -176,9 +164,9 @@ class Reviews(models.Model):
 
 class Room(models.Model):
     number = models.PositiveIntegerField('Номер комнаты')
-    admin = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Администратор',
+    admin = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True, verbose_name='Администратор',
                               related_name="user_admin_room")
-    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, verbose_name='Пользователь',
+    user = models.OneToOneField('user.User', on_delete=models.SET_NULL, null=True, verbose_name='Пользователь',
                                 related_name="user_room")
 
     def __str__(self):
@@ -191,7 +179,7 @@ class Room(models.Model):
 
 class Message(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE, verbose_name='Комната', related_name="number_room")
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Пользователь',
+    user = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True, verbose_name='Пользователь',
                              related_name="user_message")
     text = models.TextField('Текст сообщения')
     date = models.DateTimeField('Дата', auto_now=True)

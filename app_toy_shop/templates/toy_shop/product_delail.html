@@ -15,12 +15,27 @@
          <img src="{{ link.link.url }}">
          {% endfor %}
      </p>
+    <li>
+    <form action="{% url 'add_rating' %}" method="post" name="rating">
+        <b>Рейтинг:</b>
+        {% csrf_token %}
+        <input type="hidden" value="{{ product.id }}" name="product">
+        <span class="rating">
+              {% for k, v in star_form.fields.star.choices %}
+                   <input id="rating{{ v }}" type="radio" name="star"
+                          value="{{ k }}">
+                   <label for="rating{{ v }}">{{ k }}</label>
+              {% endfor %}
+              </span>
+        <span class="editContent">4.0</span>
+    </form>
+    </li>
 <p>Комментарии</p>
 <ul>
 {% for item in toy.product_reviews.all %}
 <li>
 Дата создания: {{item.created}} <br>
-Автор: {{item.cuser}} <br><br>
+Автор: {{item.user}} <br><br>
 {{item.description}} <br>
 </li>
 {% endfor %}

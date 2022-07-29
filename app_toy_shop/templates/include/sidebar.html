@@ -1,10 +1,18 @@
 <aside>
 		<nav>
 			<ul class="aside-menu">
-				<li class="active"></li>
-				<li><a href="/donec/">Мягкие игрушки</a></li>
-				<li><a href="/vestibulum/">Музыкальные инструменты</a></li>
-				<li><a href="/etiam/">Бытовая техника для детей</a></li>
+				<form action="{% url 'search' %}" method="get">
+					<input type="search" placeholder="Введите название..." name="q" class="form-control", required="">
+					<button type="submit">Найти</button>
+				</form>
+				<form action="{% url 'filter' %}" method="get">
+					<li class="active"></li>
+					{% for category in view.get_category %}
+						<input type="checkbox" class="cheked" name="category" value="{{category.name}}">
+						<span class="span editConect">{{category.name}}</span>
+					{% endfor %}
+					<button type="submit">Найти</button>
+				</form>
 			</ul>
 		</nav>
 </aside>
