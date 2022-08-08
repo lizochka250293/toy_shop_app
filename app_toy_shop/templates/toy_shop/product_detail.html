@@ -10,13 +10,20 @@
          <p><img class="imd-article-left" src="{{toy.poster.url}}"></p>{% endif %}</h3>
      <h3>Описание - {{ toy.description }}</h3>
      <h3>Цена - {{ toy.price }}</h3>
+
+    <form action="{% url 'cart:cart_add' toy.id %}" method="post">
+        {{ cart_product_form }}
+        {% csrf_token %}
+        <input type="submit" value="Добавить в корзину">
+    </form>
+
      <p>
          {% for link in toy.product_image.all %}
          <img src="{{ link.link.url }}">
          {% endfor %}
      </p>
     <li>
-    <form action="{% url 'add_rating' %}" method="post" name="rating">
+    <form action="{% url 'shop:add_rating' %}" method="post" name="rating">
         <b>Рейтинг:</b>
         {% csrf_token %}
         <input type="hidden" value="{{ product.id }}" name="product">
@@ -30,6 +37,9 @@
         <span class="editContent">4.0</span>
     </form>
     </li>
+>
+
+
 <p>Комментарии</p>
 <ul>
 {% for item in toy.product_reviews.all %}
@@ -47,7 +57,9 @@
         {% csrf_token %}
             {{form.as_p}}
     </form>
-     <button form="add_form" type="submit" class="btn.btn-primary">Добавить</button>
+    <button form="add_form" type="submit" class="btn.btn-primary">Добавить</button>
+
+
 </div>
 {% endblock content %}
 

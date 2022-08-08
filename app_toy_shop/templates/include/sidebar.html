@@ -1,11 +1,11 @@
 <aside>
 		<nav>
 			<ul class="aside-menu">
-				<form action="{% url 'search' %}" method="get" name="search">
+				<form action="{% url 'shop:search' %}" method="get" name="search">
 					<input type="search" placeholder="Введите название..." name="q" class="form-control", required="">
 					<button type="submit">Найти</button>
 				</form>
-				<form action="{% url 'filter' %}" method="get">
+				<form action="{% url 'shop:filter' %}" method="get">
 					<li class="active"></li>
 					{% for category in view.get_category %}
 						<input type="checkbox" class="cheked" name="category" value="{{category.name}}">

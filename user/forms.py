@@ -16,13 +16,13 @@ class RegisterUserForm(UserCreationForm):
 
 
 class LoginUserForm(AuthenticationForm):
-    phone = forms.CharField(
-        label='Телефон',
-        widget=forms.TextInput(attrs={'class': 'form-input'}),
-        validators=(phone_validator,)
-    )
+    # phone = forms.CharField(
+    #     label='Телефон',
+    #     widget=forms.TextInput(attrs={'class': 'form-input'}),
+    #     validators=(phone_validator,)
+    # )
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
 
     class Meta:
         model = User
-        fields = ('phone', 'password')
+        fields = ('username', 'password')

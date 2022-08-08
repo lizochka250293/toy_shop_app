@@ -1,12 +1,11 @@
-from django.contrib.auth import login, logout
-from django.contrib.auth.views import LoginView
 from django.http import HttpResponse
-from django.shortcuts import redirect
-from django.urls import reverse_lazy, reverse
+from django.http import HttpResponse
+from django.shortcuts import redirect, render, get_object_or_404
+from django.urls import reverse
 from django.views import View
-from django.views.generic import CreateView, ListView, DetailView
-from django.views.generic.edit import FormMixin
-
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import FormMixin, CreateView
+from cart.forms import CartAddProductForm
 from .forms import ReviewForm, RatingForm
 from .models import Product, Category, StarForProduct
 
@@ -30,7 +29,7 @@ class ToyDetailView(GetCategory, FormMixin, DetailView):
     model = Product
     slug_field = 'url'
     context_object_name = "toy"
-    template_name = 'toy_shop/product_delail.html'
+    template_name = 'toy_shop/product_detail.html'
     form_class = ReviewForm
 
     def get_context_data(self, **kwargs):
@@ -40,7 +39,7 @@ class ToyDetailView(GetCategory, FormMixin, DetailView):
 
     def get_success_url(self):
         slug = self.kwargs['slug']
-        return reverse('toy_delail', kwargs={'slug': slug})
+        return reverse('toy_detail', kwargs={'slug': slug})
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -59,8 +58,7 @@ class ToyDetailView(GetCategory, FormMixin, DetailView):
 # class ToyDetailView(View):
 #     def get(self, request, slug):
 #         toy = Product.objects.get(url=slug)
-#         return render(request, 'toy_shop/product_delail.html', {'toy': toy})
-
+#         return render(request, 'toy_shop/product_detail.html', {'toy': toy})
 
 
 
@@ -90,8 +88,10 @@ class Search(ListView):
         context['q'] = self.request.GET.get('q')
         return context
 
+
 class AddStarRating(View):
     """Добавление рейтинга фильму"""
+
     def get_client_ip(self, request):
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
@@ -111,3 +111,10 @@ class AddStarRating(View):
             return HttpResponse(status=201)
         else:
             return HttpResponse(status=400)
+
+
+
+
+
+
+
