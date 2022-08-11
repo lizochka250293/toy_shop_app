@@ -1,0 +1,26 @@
+{% extends 'toy_shop/base.html' %}
+
+
+{% block title %}Информация о товаре  - {{ product.name }}{% endblock %}
+
+
+{% block content %}
+     <h2>Информация о товаре - {{ product.name }}</h2>
+     <h3>{% if product.poster %}
+         <p><img class="imd-article-left" src="{{product.poster.url}}"></p>{% endif %}</h3>
+     <h3>Описание - {{ product.description }}</h3>
+    <p>
+         {% for link in product.product_image.all %}
+         <img src="{{ link.link.url }}">
+         {% endfor %}
+     </p>
+    <li>
+     <h3>Цена - {{ product.price }}</h3>
+
+    <form action="{% url 'cart:cart_add' product.id %}" method="post">
+        {{ cart_product_form }}
+        {% csrf_token %}
+        <input type="submit" value="Добавить в корзину">
+    </form>
+
+{% endblock content %}

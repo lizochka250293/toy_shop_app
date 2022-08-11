@@ -24,37 +24,41 @@ class ProductView(GetCategory, ListView):
     paginate_by = 3
 
 
-class ToyDetailView(GetCategory, FormMixin, DetailView):
-    # один продукт
-    model = Product
-    slug_field = 'url'
-    context_object_name = "toy"
-    template_name = 'toy_shop/product_detail.html'
-    form_class = ReviewForm
+# class ToyDetailView(GetCategory, FormMixin, DetailView):
+#     # один продукт
+#     model = Product
+#     slug_field = 'url'
+#     context_object_name = "toy"
+#     template_name = 'toy_shop/product_detail.html'
+#     form_class = ReviewForm
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['star_form'] = RatingForm()
+#         return context
+#
+#     def get_success_url(self):
+#         slug = self.kwargs['slug']
+#         return reverse('toy_detail', kwargs={'slug': slug})
+#
+#     def post(self, request, *args, **kwargs):
+#         if not request.user.is_authenticated:
+#             return redirect('login')
+#         form = self.get_form()
+#         return self.form_valid(form)
+#
+#     def form_valid(self, form):
+#         self.object = form.save(commit=False)
+#         self.object.product = self.get_object()
+#         self.object.user = self.request.user
+#         self.object.save()
+#         return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['star_form'] = RatingForm()
-        return context
-
-    def get_success_url(self):
-        slug = self.kwargs['slug']
-        return reverse('toy_detail', kwargs={'slug': slug})
-
-    def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect('login')
-        form = self.get_form()
-        return self.form_valid(form)
-
-    def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.product = self.get_object()
-        self.object.user = self.request.user
-        self.object.save()
-        return super().form_valid(form)
-
-
+def product_detail(request, slug):
+    product = Product.objects.get(url=slug)
+    cart_product_form = CartAddProductForm()
+    return render(request, 'toy_shop/product_detail_2.html', {'product': product,
+                                                        'cart_product_form': cart_product_form})
 # class ToyDetailView(View):
 #     def get(self, request, slug):
 #         toy = Product.objects.get(url=slug)
