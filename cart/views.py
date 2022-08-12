@@ -29,10 +29,19 @@ def cart_remove(request, product_id):
 
 def cart_detail(request):
     cart = Cart(request)
+    form = CartAddProductForm()
     print('ok')
     print(cart)
-    return render(request, 'cart/detail.html', {'cart': cart})
+    return render(request, 'cart/detail.html', {'cart': cart, 'form': form})
 
 
+def cart_update(request, product_id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, id=product_id)
+    form = CartAddProductForm(request.POST)
+    if form.is_valid():
+        cd = form.cleaned_data['quantity']
+        cart.add(product, quantity=cd, update_quantity=True)
+    return redirect('cart:cart_detail')
 
 

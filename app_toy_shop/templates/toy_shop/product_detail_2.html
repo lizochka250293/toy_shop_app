@@ -18,7 +18,7 @@
      <h3>Цена - {{ product.price }}</h3>
 
     <form action="{% url 'cart:cart_add' product.id %}" method="post">
-        {{ cart_product_form }}
+        {{ form }}
         {% csrf_token %}
         <input type="submit" value="Добавить в корзину">
     </form>

@@ -18,12 +18,12 @@ from user.models import User
 class RegisterUser(CreateView):
     form_class = RegisterUserForm
     template_name = 'user/register.html'
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('login_view')
 
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('title')
+        return super().form_valid(form)
 
 
 class LoginUser(LoginView):
@@ -36,7 +36,7 @@ class LoginUser(LoginView):
 
 def logout_user(request):
     logout(request)
-    return redirect('title')
+    return redirect('/')
 
 
 @login_required
@@ -65,13 +65,14 @@ def verify_view(request):
         code_user = f'{user.username}: {user.code}'
         if not request.POST:
             print(code.user)
+            print(code_user)
         if form.is_valid():
             num = form.cleaned_data.get('number')
 
             if str(code) == num:
                 code.save()
                 login(request, user)
-                return redirect('home_view')
+                return redirect('/')
             else:
                 return redirect('login_view')
     return render(request, 'temp/verify.html', {'form': form})

@@ -124,3 +124,9 @@ figure figcaption span {
 section > figure + figure {
 	margin-left: 28px;
 }
+
+
+.img-cart-product {
+    width: 100px;
+    height: 100px;
+}

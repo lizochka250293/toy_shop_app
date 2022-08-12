@@ -25,13 +25,13 @@
                 <tr>
                     <td>
               <a href="{% url 'shop:toy_detail' product.url %}"> {{ product }}
-                <img src="{% if product.poster %}{{ product.poster.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}">
+                <img class="img-cart-product" src="{% if product.poster %}{{ product.poster.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}">
               </a>
             </td>
             <td>{{ product.title }}</td>
             <td>
-              <form action="{% url 'cart:cart_add' product.id %}" method="post">
-                {{ item.update_quantity_form.quantity }}
+              <form action="{% url 'cart:update_card' product.id %}" method="post">
+                {{ form }}
                 {{ item.update_quantity_form.update }}
                 <input type="submit" value="Обновить">
                 {% csrf_token %}

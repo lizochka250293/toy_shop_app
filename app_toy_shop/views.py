@@ -53,16 +53,18 @@ class ProductView(GetCategory, ListView):
 #         self.object.user = self.request.user
 #         self.object.save()
 #         return super().form_valid(form)
+class ToyDetailView(GetCategory, FormMixin, DetailView):
+    model = Product
+    slug_field = 'url'
+    context_object_name = "product"
+    template_name = 'toy_shop/product_detail_2.html'
+    form_class = CartAddProductForm
+# def product_detail(request, slug):
+#     product = Product.objects.get(url=slug)
+#     cart_product_form = CartAddProductForm()
+#     return render(request, 'toy_shop/product_detail_2.html', {'product': product,
+#                                                         'cart_product_form': cart_product_form})
 
-def product_detail(request, slug):
-    product = Product.objects.get(url=slug)
-    cart_product_form = CartAddProductForm()
-    return render(request, 'toy_shop/product_detail_2.html', {'product': product,
-                                                        'cart_product_form': cart_product_form})
-# class ToyDetailView(View):
-#     def get(self, request, slug):
-#         toy = Product.objects.get(url=slug)
-#         return render(request, 'toy_shop/product_detail.html', {'toy': toy})
 
 
 

@@ -5,5 +5,5 @@ class CodeForm(forms.ModelForm):
     number = forms.CharField(label='Code', help_text='Enter sms verifications')
 
     class Meta:
-        models = Code
+        model = Code
         fields = ('number',)
