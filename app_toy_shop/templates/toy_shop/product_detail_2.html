@@ -37,6 +37,16 @@
         <span class="editContent">4.0</span>
     </form>
     </li>
+<p>Комментарии</p>
+<ul>
+{% for item in product.product_reviews.all %}
+<li>
+Дата создания: {{item.created}} <br>
+Автор: {{item.user}} <br><br>
+Отзыв: {{item.description}} <br>
+</li>
+{% endfor %}
+</ul>
     <form action="{% url 'shop:add_review' product.id %}" method="post">
         {% csrf_token %}
         <textarea name="description" required=""></textarea>

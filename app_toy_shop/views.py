@@ -125,13 +125,11 @@ class AddReview(View):
         form = ReviewForm(request.POST)
         product = Product.objects.get(id=pk)
         if form.is_valid():
-            print(form.cleaned_data)
             form = form.save(commit=False)
-            form.product_id = product
-            print(request.user.id)
+            form.product_id = product.id
             form.user_id = request.user.id
             form.save()
 
-        return redirect('title')
+        return render(request, 'toy_shop/product_detail_2.html', {'product': product})
 
 
