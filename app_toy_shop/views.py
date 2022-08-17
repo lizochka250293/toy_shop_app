@@ -120,7 +120,18 @@ class AddStarRating(View):
 
 
 
+class AddReview(View):
+    def post(self, request, pk):
+        form = ReviewForm(request.POST)
+        product = Product.objects.get(id=pk)
+        if form.is_valid():
+            print(form.cleaned_data)
+            form = form.save(commit=False)
+            form.product_id = product
+            print(request.user.id)
+            form.user_id = request.user.id
+            form.save()
 
-
+        return redirect('title')
 
 

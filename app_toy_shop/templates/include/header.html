@@ -1,11 +1,11 @@
 <div id="wrapper">
-		<header>
+		<div class="reg">
 			{% if request.user.is_authenticated %}
 			<li class="last"> {{user.username}} | <a href="{% url 'logout' %}">Выйти</a></li>
 			{% else %}
 			<li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login_view' %}">Войти</a></li>
 			{% endif %}
-		</header>
+		</div>
 		<nav>
 			<ul class="top-menu">
 				<li><a href="{% url 'shop:title' %}">Главная</a></li>
