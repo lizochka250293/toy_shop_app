@@ -10,18 +10,23 @@
 <body>
 <div class="wrapper">
     <div class="page">
-        <div class="header"></div>
+        <div class="header">
             <div class="header_text">
             <span>Магазин игрушек</span>
             </div>
-        <div id="wrapper">
-		<header>
+            <div class="register">
+            <header>
 			{% if request.user.is_authenticated %}
 			<li class="last"> {{user.username}} | <a href="{% url 'logout' %}">Выйти</a></li>
 			{% else %}
 			<li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login_view' %}">Войти</a></li>
 			{% endif %}
-		</header>
+            </header>
+            </div>
+            <div class="cart">
+            </div>
+        </div>
+        <div id="wrapper">
 		<nav>
 			<ul class="top-menu">
 				<li><a href="{% url 'shop:title' %}">Главная</a></li>
@@ -29,50 +34,37 @@
 				<li><a href="/partners/">Контакты</a></li>
 				<li><a href="/customers/">Доставка</a></li>
 				<li><a href="/projects/">Возврат</a></li>
-				<li><a href="/careers/">Корзина</a></li>
+				<li><a href="{% url 'cart:cart_detail' %}">Корзина</a></li>
 			</ul>
 		</nav>
 </div>
-<div class="cart">
-    {% with total_items=cart|length %}
-        {% if cart|length > 0 %}
-            Ваша корзина:
-            <a href="{% url 'cart:cart_detail' %}">
-                {{ total_items }} item{{ total_items|pluralize }},
-                ${{ cart.get_total_price }}
-            </a>
-        {% else %}
-            В Вашей корзине пусто.
-        {% endif %}
-    {% endwith %}
-</div>
 <aside>
-    <ul class="aside-menu">
+    <ul class="main-menu">
+        <li class="menu_search">
         <form action="{% url 'shop:search' %}" method="get" name="search">
             <input type="search" placeholder="Введите название..." name="q" class="form-control", required="">
             <button type="submit">Найти</button>
-        </form>
+        </form></li>
         <form action="{% url 'shop:filter' %}" method="get">
-            <li class="active"></li>
             {% for category in view.get_category %}
+            <li class="menu_item">
+            <span>{{category.name}}</span>
             <input type="checkbox" class="cheked" name="category" value="{{category.name}}">
-            <span class="span editConect">{{category.name}}</span>
+            </li>
             {% endfor %}
-            <button type="submit">Найти</button>
+            <button class="menu_item_button" type="submit">Найти</button>
         </form>
     </ul>
 </aside>
 
-        <div class="content">Основное содержимое</div>
+        <div class="content"></div>
         <div class="left-ads-display col-lg-9">
     {% block content %}
     {% endblock content %}
-            </nav>
-    <div class="footer">
-        <p>&copy; Все права защищены.
-        <p>&nbsp;
-    </div>
-</div>
 
+<div class="footer">
+    <p>&copy; Все права защищены.
+    <p>&nbsp;
+</div>
 </body>
 </html>

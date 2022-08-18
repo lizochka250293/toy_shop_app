@@ -27,6 +27,31 @@ html, body {
     font-family: Tahoma, Arial;
     font-size: 38px;
 }
+.register {
+    margin: 0 0 5px 1300px;
+    list-style: none;
+}
+.cart{
+    margin: 0 0 5px 1300px;
+}
+.main-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: #EDEEF0;
+    color: #285473;
+    width: 350px;
+}
+.menu_item {
+    padding: 2px;
+    margin: 10px 0 10px 10px;
+}
+.menu_item_button {
+    margin: 10px 0 10px 10px;
+}
+.menu_search {
+    margin: 20px 0 10px 10px;
+}
 .reg {
 	float: right;
 }
@@ -47,8 +72,8 @@ nav li {
 
 .top-menu li {
 	display: inline-block;
-	padding: 10px 30px;
-	margin: 0;
+	padding: 10px 5px;
+	margin: 0 0 0 180px;
 }
 
 .top-menu li.active {
@@ -92,6 +117,14 @@ section {
 .img-product {
     width: 200px;
     height: 200px;
+    margin: 20px 0 20px 0;
+}
+.review {
+    list-style: none;
+    padding: 5px 0 5px 0;
+}
+.star {
+    margin: 20px 0 20px 0;
 }
 ul.stars li {
     display: inline-block;
@@ -113,6 +146,78 @@ span.product-new-top {
     text-transform: uppercase;
     padding: 0.3em 1.2em;
     color: #fff;
+}
+.row {
+    margin: 10px 0 0 250px;
+}
+.container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+.box {
+    width: 33%;
+}
+@media screen and (max-width: 576px) {
+  .container {
+      flex-wrap: wrap;
+      align-items: center;
+     }
+  .box {
+      width: 50%;
+  }
+}
+.description_product {
+	position: relative;
+	margin: 20 px 0 20 px;
+	font-size: 1em;
+	line-height: 1.4em;
+	height: 5.6em;
+	overflow: hidden;
+}
+.product_price{
+    margin: 20px 0 20px 0;
+}
+.product_des {
+    margin: 0 270px 0 270px;
+}
+.product_img {
+    margin: 0 270px 0 270px;
+}
+.product-wrapper {
+	display: block;
+	width: 100%;
+	float: left;
+	transition: width .2s;
+}
+.product {
+	display: block;
+	border: 1px solid #b5e9a7;
+	border-radius: 3px;
+	position: relative;
+	background: #fff;
+	margin: 0 20px 20px 0;
+	text-decoration: none;
+	color: #474747;
+	z-index: 0;
+	height: 300px;
+}
+@media only screen and (min-width: 450px) {
+	.product-wrapper {
+		width: 50%;
+	}
+}
+
+@media only screen and (min-width: 768px) {
+	.product-wrapper {
+		width: 33.333%;
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+	.product-wrapper {
+		width: 25%;
+	}
 }
 
 .rating {

@@ -5,24 +5,23 @@
 
 
 {% block content %}
+     <div class="product_img">
      <h2>Информация о товаре - {{ product.name }}</h2>
      <h3>{% if product.poster %}
          <p><img class="img-product" src="{{product.poster.url}}"></p>{% endif %}</h3>
-     <h3>Описание - {{ product.description }}</h3>
-    <p>
+     <p class="description_product">Описание - {{ product.description }}</p>
          {% for link in product.product_image.all %}
          <img  class="img-product" src="{{ link.link.url }}">
          {% endfor %}
-     </p>
-    <li>
+     <div class="product_price">
      <h3>Цена - {{ product.price }}</h3>
-
+     </div>
     <form action="{% url 'cart:cart_add' product.id %}" method="post">
         {{ form }}
         {% csrf_token %}
         <input type="submit" value="Добавить в корзину">
     </form>
-     <li>
+    <div class="star">
     <form action="{% url 'shop:add_rating' %}" method="post" name="rating">
         <b>Рейтинг:</b>
         {% csrf_token %}
@@ -36,21 +35,22 @@
               </span>
         <span class="editContent">4.0</span>
     </form>
-    </li>
+    </div>
+    <form action="{% url 'shop:add_review' product.id %}" method="post">
+        {% csrf_token %}
+        <textarea name="description" required=""></textarea>
+        <p><input type="submit" value="Отправить отзыв"></p>
+    </form>
+<div class="product_price">
 <p>Отзывы</p>
-<ul>
+<ul class="review">
 {% for item in product.product_reviews.all %}
-<li>
+<li class="review">
 Отзыв: {{item.description}} <br>
 Дата создания: {{item.created}} <br>
 Автор: {{item.user}} <br>
 </li>
 {% endfor %}
 </ul>
-    <form action="{% url 'shop:add_review' product.id %}" method="post">
-        {% csrf_token %}
-        <textarea name="description" required=""></textarea>
-        <p><input type="submit" value="Отправить отзыв"></p>
-    </form>
-
+</div>
 {% endblock content %}

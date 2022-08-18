@@ -1,45 +1,23 @@
 {% extends 'toy_shop/base.html' %}
 {% block content %}
 
-<div class="left-ads-display col-lg-9">
-    <div class="row">
-        {% for product in product_list %}
-        <div class="col-md-4 product-men">
-            <div class="product-shoe-info editContent text-center mt-lg-4" >
-                <div class="men-thumb-item">
-                    <img class="img-product" src="{{ product.poster.url }}" class="img-fluid" alt="" >
-                </div>
-                <div class="item-info-product">
-                    <h4 class="">
-                        <a href="{% url 'shop:toy_detail' product.url %}" class="editContent" >{{ product }}</a>
-                        <h3>Цена - {{ product.price }}</h3>
-                    </h4>
 
-                    <ul class="stars">
-                        <li><a href="#"><span class="fa fa-star" aria-hidden="true" ></span></a></li>
-                        <li><a href="#"><span class="fa fa-star" aria-hidden="true" ></span></a></li>
-                        <li><a href="#"><span class="fa fa-star-half-o" aria-hidden="true" ></span></a></li>
-                        <li><a href="#"><span class="fa fa-star-half-o" aria-hidden="true" ></span></a></li>
-                        <li><a href="#"><span class="fa fa-star-o" aria-hidden="true" ></span></a></li>
-                    </ul>
-                </div>
-            </div>
+<div class="row">
+    {% for product in product_list %}
+    <div class="products clearfix">
+        <div class="product">
+            <img class="img-product" src="{{ product.poster.url }}"  alt="" >
         </div>
-        {% endfor %}
+        <div class="item-info-product">
+            <h4 class="">
+                <a href="{% url 'shop:toy_detail' product.url %}" class="editContent" >{{ product }}</a>
+                <h3>Цена - {{ product.price }}</h3>
+            </h4>
+        </div>
     </div>
-<nav>
-    <ul>
-        {% for p in paginator.page_range %}
-        {% if page_obj.number == p %}
-        <li class="#">{{p}}</li>
-        {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
-        <li class="#">
-            <a href="?page={{ p }}">{{ p }}</a>
-        </li>
-        {% endif %}
-        {% endfor %}
-    </ul>
-</nav>
+
+    {% endfor %}
+</div>
 
 {% endblock content %}
 
