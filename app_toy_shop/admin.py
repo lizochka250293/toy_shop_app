@@ -10,7 +10,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display_links = ['name']
 
 
-class RewiewInline(admin.TabularInline):
+class ReviewInline(admin.TabularInline):
     model = Reviews
     extra = 1
     readonly_fields = ('user',)
@@ -32,7 +32,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display_links = ['name']
     search_fields = ['name', 'category__name']
     list_editable = ('is_active',)
-    inlines = [ToyImage, RewiewInline]
+    inlines = [ToyImage, ReviewInline]
     save_on_top = True
     readonly_fields = ('get_image',)
 
@@ -48,27 +48,6 @@ class ImageAdmin(admin.ModelAdmin):
 
     def get_image(self, obj):
         return mark_safe(f'<img src={obj.link.url} width="50" height="60"')
-
-
-# class BasketAdmin(admin.ModelAdmin):
-#     list_display = ['total_price', 'user', 'is_active']
-#     search_fields = ['user']
-#
-#
-# class ItemAdmin(admin.ModelAdmin):
-#     list_display = ['product', 'count', 'basket']
-#
-#
-# class AddressAdmin(admin.ModelAdmin):
-#     list_display = ['user', 'town', 'street', 'house', 'flat']
-#
-#
-# class PayAdmin(admin.ModelAdmin):
-#     list_display = ['method_pay', 'address']
-#
-#
-# class OrderAdmin(admin.ModelAdmin):
-#     list_display = ['basket', 'date', 'method_pay', 'status']
 
 
 class StarAdmin(admin.ModelAdmin):
@@ -96,11 +75,6 @@ class MessageAdmin(admin.ModelAdmin):
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Image, ImageAdmin)
-# admin.site.register(Basket, BasketAdmin)
-# admin.site.register(Item, ItemAdmin)
-# admin.site.register(Address, AddressAdmin)
-# admin.site.register(Pay, PayAdmin)
-# admin.site.register(Order, OrderAdmin)
 admin.site.register(Star, StarAdmin)
 admin.site.register(StarForProduct, StarForProductAdmin)
 admin.site.register(Reviews, ReviewsAdmin)

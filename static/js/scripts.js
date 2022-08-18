@@ -1,12 +1,12 @@
-const rating = document.querySelector('form[name=rating]');
+const rating = document.querySelector(selectors: 'form[name=rating]');
 
-rating.addEventListener("change", function (e) {
+rating.addEventListener(type: "change", listener: function (e :Event) {
     // Получаем данные из формы
     let data = new FormData(this);
-    fetch(`${this.action}`, {
+    fetch(input: `${this.action}`, init: {
         method: 'POST',
         body: data
-    })
-        .then(response => alert("Рейтинг установлен"))
+    }) Promise<Response>
+        .then(response => alert("Рейтинг установлен")) Promise<void>
         .catch(error => alert("Ошибка"))
 });

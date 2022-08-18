@@ -1,16 +1,17 @@
-from django.db import models
-
 # Create your models here.
 from django.db import models
+
 from app_toy_shop.models import Product
-from user.models import User
+
+
 class Order(models.Model):
     PAYMENT_METHOD = [
         (1, 'Оплата картой на сайте'),
         (2, 'Оплата картой при получении'),
         (3, 'Оплата наличными при получении')
     ]
-    user = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name='Пользователь', related_name="user_basket")
+    user = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name='Пользователь',
+                             related_name="user_basket")
     address = models.CharField(max_length=250)
     postal_code = models.CharField(max_length=20)
     city = models.CharField(max_length=100)
@@ -43,16 +44,9 @@ class OrderItem(models.Model):
         return self.price * self.quantity
 
 
-
 class PayStatus(models.Model):
-
-
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='pay')
     status = models.BooleanField('Статус', default=False)
 
     def __str__(self):
         return f'{self.order}'
-
-
-
-

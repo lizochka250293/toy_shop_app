@@ -1,28 +1,28 @@
 {% extends 'toy_shop/base.html' %}
 
 
-{% block title %}Информация о товаре  - {{ toy.name }}{% endblock %}
+{% block title %}Информация о товаре  - {{ product.name }}{% endblock %}
 
 
 {% block content %}
-     <h2>Информация о товаре - {{ toy.name }}</h2>
-     <h3>{% if toy.poster %}
-         <p><img class="imd-article-left" src="{{toy.poster.url}}"></p>{% endif %}</h3>
-     <h3>Описание - {{ toy.description }}</h3>
-     <h3>Цена - {{ toy.price }}</h3>
-
-    <form action="{% url 'cart:cart_add' toy.id %}" method="post">
-        {{ cart_product_form }}
-        {% csrf_token %}
-        <input type="submit" value="Добавить в корзину">
-    </form>
-
-     <p>
-         {% for link in toy.product_image.all %}
-         <img src="{{ link.link.url }}">
+     <h2>Информация о товаре - {{ product.name }}</h2>
+     <h3>{% if product.poster %}
+         <p><img class="img-product" src="{{product.poster.url}}"></p>{% endif %}</h3>
+     <h3>Описание - {{ product.description }}</h3>
+    <p>
+         {% for link in product.product_image.all %}
+         <img  class="img-product" src="{{ link.link.url }}">
          {% endfor %}
      </p>
     <li>
+     <h3>Цена - {{ product.price }}</h3>
+
+    <form action="{% url 'cart:cart_add' product.id %}" method="post">
+        {{ form }}
+        {% csrf_token %}
+        <input type="submit" value="Добавить в корзину">
+    </form>
+     <li>
     <form action="{% url 'shop:add_rating' %}" method="post" name="rating">
         <b>Рейтинг:</b>
         {% csrf_token %}
@@ -37,27 +37,20 @@
         <span class="editContent">4.0</span>
     </form>
     </li>
-
-<p>Комментарии</p>
+<p>Отзывы</p>
 <ul>
-{% for item in toy.product_reviews.all %}
+{% for item in product.product_reviews.all %}
 <li>
+Отзыв: {{item.description}} <br>
 Дата создания: {{item.created}} <br>
-Автор: {{item.user}} <br><br>
-{{item.description}} <br>
+Автор: {{item.user}} <br>
 </li>
 {% endfor %}
 </ul>
-<hr>
-<p>Добавить комментарии</p>
-<div class="col-4">
-    <form action="" id="add_form" method="post">
+    <form action="{% url 'shop:add_review' product.id %}" method="post">
         {% csrf_token %}
-            {{form.as_p}}
+        <textarea name="description" required=""></textarea>
+        <p><input type="submit" value="Отправить отзыв"></p>
     </form>
-    <button form="add_form" type="submit" class="btn.btn-primary">Добавить</button>
 
-
-</div>
 {% endblock content %}
-

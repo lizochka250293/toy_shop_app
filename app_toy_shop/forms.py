@@ -1,6 +1,6 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.forms import Textarea
+
 from app_toy_shop.models import Reviews, Star
 
 

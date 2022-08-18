@@ -5,6 +5,7 @@ from app_toy_shop.models import Product
 from .cart import Cart
 from .forms import CartAddProductForm
 
+
 @require_POST
 def cart_add(request, product_id):
     cart = Cart(request)
@@ -17,7 +18,6 @@ def cart_add(request, product_id):
                  quantity=cd['quantity'],
                  update_quantity=cd['update'])
     return redirect('cart:cart_detail')
-
 
 
 def cart_remove(request, product_id):
@@ -43,5 +43,3 @@ def cart_update(request, product_id):
         cd = form.cleaned_data['quantity']
         cart.add(product, quantity=cd, update_quantity=True)
     return redirect('cart:cart_detail')
-
-

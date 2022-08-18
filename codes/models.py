@@ -1,9 +1,11 @@
+import random
+
 from django.db import models
 
 from user.models import User
-import random
 
-# Create your models here.
+
+
 class Code(models.Model):
     number = models.CharField(max_length=5, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)

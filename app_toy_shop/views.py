@@ -1,75 +1,52 @@
 from django.http import HttpResponse
-from django.http import HttpResponse
-from django.shortcuts import redirect, render, get_object_or_404
-from django.urls import reverse
+from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import FormMixin, CreateView
+from django.views.generic.edit import FormMixin
+
 from cart.forms import CartAddProductForm
 from .forms import ReviewForm, RatingForm
 from .models import Product, Category, StarForProduct
 
 
 class GetCategory:
+    """Все категории"""
 
     def get_category(self):
         return Category.objects.all()
 
 
 class ProductView(GetCategory, ListView):
-    #    ***список всех продуктов***
+    """Список всех товаров"""
     model = Product
     queryset = Product.objects.filter(is_active=True)
     template_name = 'toy_shop/title.html'
     paginate_by = 3
 
 
-# class ToyDetailView(GetCategory, FormMixin, DetailView):
-#     # один продукт
-#     model = Product
-#     slug_field = 'url'
-#     context_object_name = "toy"
-#     template_name = 'toy_shop/product_detail.html'
-#     form_class = ReviewForm
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['star_form'] = RatingForm()
-#         return context
-#
-#     def get_success_url(self):
-#         slug = self.kwargs['slug']
-#         return reverse('toy_detail', kwargs={'slug': slug})
-#
-#     def post(self, request, *args, **kwargs):
-#         if not request.user.is_authenticated:
-#             return redirect('login')
-#         form = self.get_form()
-#         return self.form_valid(form)
-#
-#     def form_valid(self, form):
-#         self.object = form.save(commit=False)
-#         self.object.product = self.get_object()
-#         self.object.user = self.request.user
-#         self.object.save()
-#         return super().form_valid(form)
 class ToyDetailView(GetCategory, FormMixin, DetailView):
+    """Вывод одного товара"""
     model = Product
     slug_field = 'url'
     context_object_name = "product"
-    template_name = 'toy_shop/product_detail_2.html'
+    template_name = 'toy_shop/product_detail.html'
     form_class = CartAddProductForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['star_form'] = RatingForm()
+        return context
+
+
 # def product_detail(request, slug):
 #     product = Product.objects.get(url=slug)
 #     cart_product_form = CartAddProductForm()
-#     return render(request, 'toy_shop/product_detail_2.html', {'product': product,
+#     return render(request, 'toy_shop/product_detail.html', {'product': product,
 #                                                         'cart_product_form': cart_product_form})
 
 
-
-
 class FilterProductView(GetCategory, ListView):
-    # фильтр продуктов
+    """Добавление фильтра товаров"""
     template_name = 'toy_shop/title.html'
 
     def get_queryset(self):
@@ -79,15 +56,14 @@ class FilterProductView(GetCategory, ListView):
 
 
 class Search(ListView):
-    # поиск продуктов
+    """Поиск товаров"""
     template_name = 'toy_shop/title.html'
 
     def get_queryset(self):
         product = Product.objects.none()
         if self.request.GET.get('q'):
-            product = Product.objects.filter(name__icontains=self.request.GET.get('q'))
+            product = Product.objects.filter(name__icontains=self.request.GET.get('q').capitalize())
         return product
-        # return Product.objects.filter(name__icontains=self.request.GET.get('g'))
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -96,7 +72,7 @@ class Search(ListView):
 
 
 class AddStarRating(View):
-    """Добавление рейтинга фильму"""
+    """Добавление рейтинга товара"""
 
     def get_client_ip(self, request):
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -108,7 +84,9 @@ class AddStarRating(View):
 
     def post(self, request):
         form = RatingForm(request.POST)
+        print(int(request.POST.get("star")))
         if form.is_valid():
+            print('ok')
             StarForProduct.objects.update_or_create(
                 ip=self.get_client_ip(request),
                 product_id=int(request.POST.get("product")),
@@ -119,17 +97,19 @@ class AddStarRating(View):
             return HttpResponse(status=400)
 
 
-
 class AddReview(View):
+    """Добавление отзыва к товару"""
+
     def post(self, request, pk):
-        form = ReviewForm(request.POST)
-        product = Product.objects.get(id=pk)
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.product_id = product.id
-            form.user_id = request.user.id
-            form.save()
+        if request.user.is_authenticated:
+            form = ReviewForm(request.POST)
+            product = Product.objects.get(id=pk)
+            if form.is_valid():
+                form = form.save(commit=False)
+                form.product_id = product.id
+                form.user_id = request.user.id
+                form.save()
 
-        return render(request, 'toy_shop/product_detail_2.html', {'product': product})
-
-
+            return render(request, 'toy_shop/product_detail.html', {'product': product})
+        else:
+            return redirect('login_view')
