@@ -4,7 +4,7 @@ from .models import Code
 
 
 class CodeForm(forms.ModelForm):
-    number = forms.CharField(label='Code', help_text='Enter sms verifications')
+    number = forms.CharField(label='Код', help_text='Отравьте для аутефикации')
 
     class Meta:
         model = Code

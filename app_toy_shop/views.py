@@ -38,13 +38,6 @@ class ToyDetailView(GetCategory, FormMixin, DetailView):
         return context
 
 
-# def product_detail(request, slug):
-#     product = Product.objects.get(url=slug)
-#     cart_product_form = CartAddProductForm()
-#     return render(request, 'toy_shop/product_detail.html', {'product': product,
-#                                                         'cart_product_form': cart_product_form})
-
-
 class FilterProductView(GetCategory, ListView):
     """Добавление фильтра товаров"""
     template_name = 'toy_shop/title.html'

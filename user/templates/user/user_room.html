@@ -1,0 +1,14 @@
+{% extends 'user/base.html' %}
+
+{% block content %}
+
+<h1>История заказов</h1>
+
+{% for order in orders %}
+    <li>{{order.id}}</li>
+    <li>{{ order.get_order_status_display }}</li>
+    <form action="{% url 'user:user_order_detail' order.id %}">
+      <button type="submit">Посмотреть детали</button>
+    </form>
+{% endfor %}
+{% endblock %}

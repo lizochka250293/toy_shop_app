@@ -34,10 +34,12 @@
 				<li><a href="/partners/">Контакты</a></li>
 				<li><a href="/customers/">Доставка</a></li>
 				<li><a href="/projects/">Возврат</a></li>
-                <li><a href="{% url 'cart:cart_detail' %}">Корзина</a></li>
+				<li><a href="{% url 'cart:cart_detail' %}">Корзина</a></li>
 			</ul>
 		</nav>
 </div>
+        <div class="content"></div>
+        <div class="left-ads-display col-lg-9">
     {% block content %}
     {% endblock content %}
 

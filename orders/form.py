@@ -5,14 +5,22 @@ from .models import Order
 
 class OrderCreateForm(forms.ModelForm):
 
-    # user = forms.CharField(label='Пользователь')
-
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        super(OrderCreateForm, self).__init__(*args, **kwargs)
-        self.fields['user'].label = "Пользователь"
-        self.fields['user'].empty_label = self.request.user
+    address = forms.CharField(label='Адрес')
+    city = forms.CharField(label='Город')
 
     class Meta:
         model = Order
-        fields = ['user', 'address', 'city', 'paid']
+        fields = ['address', 'city', 'paid']
+
+
+class AddPayForm(forms.Form):
+    number_card = forms.IntegerField(label='Номер карты')
+    date = forms.CharField(label='Срок действия', max_length=255)
+    csv = forms.IntegerField(label='csv код')
+    user = forms.CharField(label='Пользователь', max_length=255)
+
+
+class OrderListForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['order_status']

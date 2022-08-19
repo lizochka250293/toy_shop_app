@@ -1,0 +1,18 @@
+{% extends "orders/base.html" %}
+
+{% block title %}Детали заказа{% endblock title %}
+
+{% block content %}
+<div>
+    {% for item in order %}
+        {{item.product_id}}
+        {{item.price}}
+        {{item.quantity}}
+    {% endfor %}
+    <form action="#" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Изменить статус</button>
+</form>
+</div>
+{% endblock %}

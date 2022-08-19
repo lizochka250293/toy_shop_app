@@ -17,9 +17,9 @@
             <div class="register">
             <header>
 			{% if request.user.is_authenticated %}
-			<li class="last"> {{user.username}} | <a href="{% url 'logout' %}">Выйти</a></li>
+			<li class="last"> <a href="{% url 'user:user_room' user.id %}">Личный кабинет</a> | <a href="{% url 'user:logout' %}">Выйти</a></li>
 			{% else %}
-			<li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login_view' %}">Войти</a></li>
+			<li class="last"><a href="{% url 'user:register' %}">Регистрация</a> | <a href="{% url 'user:login_view' %}">Войти</a></li>
 			{% endif %}
             </header>
             </div>
@@ -56,9 +56,6 @@
         </form>
     </ul>
 </aside>
-
-        <div class="content"></div>
-        <div class="left-ads-display col-lg-9">
     {% block content %}
     {% endblock content %}
 
@@ -66,5 +63,8 @@
     <p>&copy; Все права защищены.
     <p>&nbsp;
 </div>
+    </div>
+</div>
+<script src="{% static 'js/scripts.js' %}"></script>
 </body>
 </html>

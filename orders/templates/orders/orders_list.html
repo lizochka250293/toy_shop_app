@@ -1,0 +1,18 @@
+{% extends "orders/base.html" %}
+
+{% block title %}Заказы{% endblock title %}
+
+{% block content %}
+<div>
+    {% for order in order_list %}
+    <li>{{order.user}}</li>
+    <li>{{order.address}}</li>
+    <li>{{order.city}}</li>
+    <li>{{ order.get_paid_display }}</li>
+    <li>{{ order.get_order_status_display }}</li>
+    <form action="{% url 'orders:order_detail' order.id %}">
+      <button type="submit">Посмотреть детали</button>
+    </form>
+    {% endfor %}
+</div>
+{% endblock %}

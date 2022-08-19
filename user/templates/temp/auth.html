@@ -1,13 +1,16 @@
-{% extends 'temp/base_3.html' %}
+{% extends 'temp/base.html' %}
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <div class="row">
+    <div id="reg_form">
         <div class="col-4">
             <form action="" method="POST" autocomplete="off">
                 {% csrf_token %}
-                {{form|crispy}}
-                <button type="submit" class="btn btn-primary">Login</button>
+                {% for f in form %}
+                <li class="reg_list"><label class="log_title" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</li>
+                <div class="form-error">{{ f.errors }}</div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Отправить код подтверждения</button>
             </form>
 
         </div>

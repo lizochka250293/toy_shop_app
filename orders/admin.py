@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from django.contrib import admin
-from .models import Order, OrderItem
+from .models import Order, OrderItem, PayStatus
 import csv
 import datetime
 from django.http import HttpResponse
@@ -32,10 +32,16 @@ export_to_csv.short_description = 'Export to CSV'
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['user',
-                    'address', 'postal_code', 'city', 'paid',
-                    'created', 'updated']
-    list_filter = ['paid', 'created', 'updated']
+                    'address', 'city', 'paid',
+                    'created', 'order_status']
+    list_filter = ['paid', 'created']
     inlines = [OrderItemInline]
     actions = [export_to_csv]
 
+class PayStatusAdmin(admin.ModelAdmin):
+    model = PayStatus
+    list_display = ['user', 'order', 'total_price', 'status']
+    fields = ['user', 'order', 'total_price', 'status']
+
 admin.site.register(Order, OrderAdmin)
+admin.site.register(PayStatus, PayStatusAdmin)

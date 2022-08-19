@@ -72,7 +72,7 @@ nav li {
 
 .top-menu li {
 	display: inline-block;
-	padding: 10px 5px;
+	padding: 7px 5px;
 	margin: 0 0 0 180px;
 }
 
@@ -264,4 +264,28 @@ span.product-new-top {
     font-size: 11px;
     font-family: Verdana;
     text-align: center;
+}
+.order {
+    margin: 0 100px 0 0;
+}
+#reg_form {
+    width: 400px;
+    margin: 30px 0 50px 500px;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 5px 5px 10px #aaa;
+}
+
+.reg_list {
+    list-style: none;
+    margin: 10px 0 10px 0;
+    padding: 0;
+}
+.reg_title {
+    display: inline-block;
+    min-width: 110px;
+}
+.log_title{
+    display: inline-block;
+    min-width: 150px;
 }

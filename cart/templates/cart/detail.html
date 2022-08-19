@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block content %}
+  <div class="order">
   <h1>Корзина покупок</h1>
   <table class="cart">
     <thead>
@@ -20,6 +21,7 @@
       </tr>
     </thead>
     <tbody>
+    <ul class="order">
       {% for item in cart %}
             {% with product=item.product %}
                 <tr>
@@ -41,11 +43,13 @@
             <td>
               {{ item.quantity }}
             </td>
-            <td class="num">${{ item.price }}</td>
-            <td class="num">${{ item.total_price }}</td>
+            <td class="num">{{ item.price }}</td>
+            <td class="num">{{ item.total_price }}</td>
           </tr>
         {% endwith %}
       {% endfor %}
+    </ul>
+  </div>
       </tr>
     </tbody>
   </table>

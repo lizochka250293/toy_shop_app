@@ -1,0 +1,13 @@
+{% extends 'user/base.html' %}
+
+{% block title %}Детали заказа{% endblock title %}
+
+{% block content %}
+<div>
+    {% for item in order %}
+        {{item.product_id}}
+        {{item.price}}
+        {{item.quantity}}
+    {% endfor %}
+</div>
+{% endblock %}

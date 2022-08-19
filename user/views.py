@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
+from orders.models import Order, OrderItem
 from .forms import RegisterUserForm, LoginUserForm
 # Create your views here.
 from django.contrib.auth import authenticate, login
@@ -52,7 +53,7 @@ def auth_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             request.session['pk'] = user.pk
-            return redirect('verify_view')
+            return redirect('user:verify_view')
     return render(request, 'temp/auth.html', {'form': form})
 
 
@@ -74,5 +75,20 @@ def verify_view(request):
                 login(request, user)
                 return redirect('/')
             else:
-                return redirect('login_view')
+                return redirect('user:login_view')
     return render(request, 'temp/verify.html', {'form': form})
+
+
+def user_room(request, pk):
+    print(request.user.id)
+    if request.user.id == pk:
+        orders = Order.objects.filter(user_id=pk)
+        return render(request, 'user/user_room.html', {'orders': orders, 'user_id': request.user.id})
+    else:
+        return redirect('user:login_view')
+
+
+def user_order_detail(request, pk):
+    order_items = OrderItem.objects.filter(order_id=pk)
+    order = Order.objects.filter(id=pk)
+    return render(request, 'user/user_order_detail.html', {'order': order_items})

@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import Textarea
 
-from app_toy_shop.models import Reviews, Star
+from app_toy_shop.models import Reviews, Star, StarForProduct
 
 
 class ReviewForm(forms.ModelForm):
@@ -18,5 +18,7 @@ class RatingForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Star
+        model = StarForProduct
         fields = ('star',)
+
+
