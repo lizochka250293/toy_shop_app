@@ -4,13 +4,14 @@
 {% block content %}
     <div id="reg_form">
         <div class="col-4">
+            <h1>Авторизация</h1>
             <form action="" method="POST" autocomplete="off">
                 {% csrf_token %}
                 {% for f in form %}
                 <li class="reg_list"><label class="log_title" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</li>
                 <div class="form-error">{{ f.errors }}</div>
                 {% endfor %}
-                <button type="submit" class="btn btn-primary">Отправить код подтверждения</button>
+                <button type="submit" class="btn btn-primary">Отправить код для подтверждения</button>
             </form>
 
         </div>

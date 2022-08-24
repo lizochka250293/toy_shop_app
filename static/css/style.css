@@ -28,11 +28,39 @@ html, body {
     font-size: 38px;
 }
 .register {
-    margin: 0 0 5px 1300px;
+    margin: 0 0 5px 1200px;
     list-style: none;
 }
+.basket_detail {
+    margin: 0 0 0 150px;
+}
+
+.cart_user_detail{
+    align: center;
+    margin: 20px 10px 0px 200px;
+    width: 1000px;
+}
+.cart_detail{
+    align: center;
+    margin: 20px 10px 0px 150px;
+    width: 1000px;
+}
 .cart{
-    margin: 0 0 5px 1300px;
+    align: center;
+    margin: 20px 10px 0px 100px;
+    width: 1100px;
+}
+tr.spaceUnder>td, th {
+  padding-bottom: 1em;
+}
+.cart tr th{
+  text-align: left;;
+}
+.cart_detail tr th{
+  text-align: left;;
+}
+.cart_user_detail tr th{
+  text-align: left;;
 }
 .main-menu {
     list-style: none;
@@ -40,21 +68,25 @@ html, body {
     margin: 0;
     background: #EDEEF0;
     color: #285473;
-    width: 350px;
+    width: 250px;
 }
 .menu_item {
-    padding: 2px;
-    margin: 10px 0 10px 10px;
+    padding: 2px 2px;
+    margin: 10px 0 20px 10px;
 }
 .menu_item_button {
     margin: 10px 0 10px 10px;
 }
 .menu_search {
-    margin: 20px 0 10px 10px;
+    margin: 10px 0 10px 10px;
 }
 .reg {
 	float: right;
 }
+. contact {
+    margin: 0 0 0 200px;
+}
+
 nav a {
 	text-decoration: none;
 }
@@ -73,7 +105,7 @@ nav li {
 .top-menu li {
 	display: inline-block;
 	padding: 7px 5px;
-	margin: 0 0 0 180px;
+	margin: 0 0 0 150px;
 }
 
 .top-menu li.active {
@@ -138,6 +170,10 @@ ul.stars li a span {
 
 ul.stars li a span:hover {
     opacity: 0.8;
+}
+
+.user_room {
+    margin: 0 0 0 200px;
 }
 
 span.product-new-top {
@@ -288,4 +324,9 @@ span.product-new-top {
 .log_title{
     display: inline-block;
     min-width: 150px;
+}
+.contact li {
+	display: inline-block;
+	padding: 7px 5px;
+	margin: 0 0 0 100px;
 }

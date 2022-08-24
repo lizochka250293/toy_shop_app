@@ -2,13 +2,28 @@
 
 {% block content %}
 
-<h1>История заказов</h1>
-
-{% for order in orders %}
-    <li>{{order.id}}</li>
-    <li>{{ order.get_order_status_display }}</li>
-    <form action="{% url 'user:user_order_detail' order.id %}">
-      <button type="submit">Посмотреть детали</button>
-    </form>
-{% endfor %}
+<h1 class="user_room">История заказов</h1>
+<table class="cart_user_detail">
+    <thead>
+      <tr class="spaceUnder">
+        <th>Номер заказа</th>
+        <th>Дата создания</th>
+        <th>Статус</th>
+        <th>Детали</th>
+        <th> </th>
+      </tr>
+    </thead>
+     <tbody>
+     {% for order in orders %}
+    <tr class="spaceUnder">
+        <td>{{order.id}}</td>
+        <td>{{order.created}}</td>
+        <td>{{ order.get_order_status_display }}</td>
+        <td><form action="{% url 'user:user_order_detail' order.id %}">
+            <button type="submit">Посмотреть детали</button>
+            </form></td>
+    </tr>
+     {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

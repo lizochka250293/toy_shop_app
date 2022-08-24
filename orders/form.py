@@ -21,6 +21,8 @@ class AddPayForm(forms.Form):
 
 
 class OrderListForm(forms.ModelForm):
+
     class Meta:
         model = Order
         fields = ['order_status']
+

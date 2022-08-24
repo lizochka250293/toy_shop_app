@@ -1,4 +1,5 @@
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
@@ -60,27 +61,30 @@ def add_pay(request):
 
     return render(request, 'orders/pay_card.html', {'form': form})
 
-
+@login_required
 def orders_list(request):
-    order_list = Order.objects.all()
-    return render(request, 'orders/orders_list.html',
-                      {'order_list': order_list})
-
-
-def order_detail(request, pk):
-    order_items = OrderItem.objects.filter(order_id=pk)
-    order = Order.objects.filter(id=pk)
-    product = Product.objects.all()
-    if request.method == 'POST':
-        form = OrderListForm(request.POST)
-        if form.is_valid():
-            print(form.cleaned_data['order_status'])
-            order.update(
-                order_status=form.cleaned_data['order_status']
-            )
-        return redirect('orders:orders_list')
-
+    if request.user.is_superuser:
+        order_list = Order.objects.all()
+        return render(request, 'orders/orders_list.html',
+                          {'order_list': order_list})
     else:
-        form = OrderListForm()
-    return render(request, 'orders/order_detail.html', {'order': order_items, 'form': form, 'product': product})
+        return redirect('shop:title')
+
+@login_required
+def order_detail(request, pk):
+    if request.user.is_superuser:
+        order_items = OrderItem.objects.filter(order_id=pk)
+        order = Order.objects.get(id=pk)
+        product = Product.objects.all()
+        if request.method == 'POST':
+            form = OrderListForm(request.POST, initial={'order_status': order.order_status})
+            if form.is_valid():
+                order.order_status = form.cleaned_data['order_status']
+                order.save()
+            return redirect('orders:orders_list')
+        else:
+            form = OrderListForm(initial={'order_status': order.order_status})
+        return render(request, 'orders/order_detail.html', {'order': order_items, 'form': form, 'product': product})
+    else:
+        return redirect('shop:title')
 

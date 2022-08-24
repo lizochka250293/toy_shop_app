@@ -3,16 +3,33 @@
 {% block title %}Заказы{% endblock title %}
 
 {% block content %}
-<div>
+<table class="cart">
+    <thead>
+      <tr class="spaceUnder">
+        <th>Номер заказа</th>
+        <th>Пользователь</th>
+        <th>Город</th>
+        <th>Адрес</th>
+        <th>Форма оплаты</th>
+        <th>Статус</th>
+        <th>Изменить статус</th>
+        <th> </th>
+      </tr>
+    </thead>
+    <tbody>
     {% for order in order_list %}
-    <li>{{order.user}}</li>
-    <li>{{order.address}}</li>
-    <li>{{order.city}}</li>
-    <li>{{ order.get_paid_display }}</li>
-    <li>{{ order.get_order_status_display }}</li>
-    <form action="{% url 'orders:order_detail' order.id %}">
-      <button type="submit">Посмотреть детали</button>
-    </form>
+    <tr class="spaceUnder">
+        <td>{{order.id}}</td>
+        <td>{{order.user}}</td>
+        <td>{{order.city}}</td>
+        <td>{{order.address}}</td>
+        <td>{{ order.get_paid_display }}</td>
+        <td>{{ order.get_order_status_display }}</td>
+        <td><form action="{% url 'orders:order_detail' order.id %}">
+        <button type="submit">Посмотреть детали</button>
+        </form></td>
+    </tr>
     {% endfor %}
-</div>
+    </tbody>
+</table>
 {% endblock %}

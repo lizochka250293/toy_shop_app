@@ -16,6 +16,9 @@
             </div>
             <div class="register">
             <header>
+            {% if request.user.is_superuser %}
+                <li class="last"> <a href="{% url 'orders:orders_list' %}">Админ</a>
+            {% endif %}
 			{% if request.user.is_authenticated %}
 			<li class="last"> <a href="{% url 'user:user_room' user.id %}">Личный кабинет</a> | <a href="{% url 'user:logout' %}">Выйти</a></li>
 			{% else %}
@@ -30,10 +33,10 @@
 		<nav>
 			<ul class="top-menu">
 				<li><a href="{% url 'shop:title' %}">Главная</a></li>
-				<li><a href="/services/">Адреса</a></li>
-				<li><a href="/partners/">Контакты</a></li>
-				<li><a href="/customers/">Доставка</a></li>
-				<li><a href="/projects/">Возврат</a></li>
+				<li><a href="{% url 'shop:contact' %}">Контакты</a></li>
+				<li><a href="{% url 'shop:delivery' %}">Доставка</a></li>
+				<li><a href="{% url 'shop:refund' %}">Возврат</a></li>
+                <li><a href="#">Перейти в чат</a></li>
 				<li><a href="{% url 'cart:cart_detail' %}">Корзина</a></li>
 			</ul>
 		</nav>
@@ -42,7 +45,7 @@
     <ul class="main-menu">
         <li class="menu_search">
         <form action="{% url 'shop:search' %}" method="get" name="search">
-            <input type="search" placeholder="Введите название..." name="q" class="form-control", required="">
+            <input type="search" placeholder="Введите название..." name="q" class="form-control" required="">
             <button type="submit">Найти</button>
         </form></li>
         <form action="{% url 'shop:filter' %}" method="get">

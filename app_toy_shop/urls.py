@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from .views import contanc, delivery, refund
 
 app_name = 'shop'
 
@@ -10,6 +11,9 @@ urlpatterns = [
     path('add_rating/', views.AddStarRating.as_view(), name='add_rating'),
     path('search/', views.Search.as_view(), name='search'),
     path('<slug:slug>/', views.ToyDetailView.as_view(), name='toy_detail'),
-    path('review/<int:pk>/', views.AddReview.as_view(), name='add_review')
+    path('review/<int:pk>/', views.AddReview.as_view(), name='add_review'),
+    path('contact', contanc, name='contact'),
+    path('delivery', delivery, name='delivery'),
+    path('refund', refund, name='refund'),
 
 ]

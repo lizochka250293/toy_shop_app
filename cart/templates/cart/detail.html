@@ -6,12 +6,40 @@
 {% endblock %}
 
 {% block content %}
+<h1 class="basket_detail">Корзина покупок</h1>
+<table class="cart_detail">
+    <thead>
+      <tr class="spaceUnder">
+        <th>Наименование товара</th>
+        <th>Картинка</th>
+        <th>Колличество</th>
+        <th>Обновить кол-во</th>
+        <th>Цена за шт</th>
+        <th>Общая стоимость</th>
+        <th>Удалить</th>
+      </tr>
+    </thead>
+    <tbody>
+     {% for item in cart %}
+      {% with product=item.product %}
+    <tr class="spaceUnder">
+        <td><a href="{% url 'shop:toy_detail' product.url %}"> {{ product }}</td>
+        <td><img class="img-cart-product" src="{% if product.poster %}{{ product.poster.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"></td>
+        <td></td>
+        <td></td>
+        <td>{{ item.price }}</td>
+        <td>{{ item.total_price }}</td>
+        <td><a href="{% url 'cart:cart_remove' product.id %}">Удалить</a></td>
+    </tr>
+     {% endwith %}
+     {% endfor %}
+    </tbody>
+</table>
   <div class="order">
-  <h1>Корзина покупок</h1>
-  <table class="cart">
+  <table class="cart" cellpadding="10">
     <thead>
       <tr>
-        <th>Картинка</th>
+        <th><td width="100">Картинка</td></th>
         <th>Товар</th>
         <th>Обновить кол-во</th>
         <th>Удалить</th>
@@ -21,11 +49,10 @@
       </tr>
     </thead>
     <tbody>
-    <ul class="order">
       {% for item in cart %}
-            {% with product=item.product %}
-                <tr>
-                    <td>
+      {% with product=item.product %}
+          <tr>
+              <td width="100">
               <a href="{% url 'shop:toy_detail' product.url %}"> {{ product }}
                 <img class="img-cart-product" src="{% if product.poster %}{{ product.poster.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}">
               </a>
@@ -33,24 +60,21 @@
             <td>{{ product.title }}</td>
             <td>
               <form action="{% url 'cart:update_card' product.id %}" method="post">
+                {% csrf_token %}
                 {{ form }}
                 {{ item.update_quantity_form.update }}
                 <input type="submit" value="Обновить">
-                {% csrf_token %}
               </form>
             </td>
-            <td><a href="{% url 'cart:cart_remove' product.id %}">Удалить</a></td>
             <td>
               {{ item.quantity }}
             </td>
-            <td class="num">{{ item.price }}</td>
-            <td class="num">{{ item.total_price }}</td>
+            <td>{{ item.price }}</td>
+            <td >{{ item.total_price }}</td>
+            <td><a href="{% url 'cart:cart_remove' product.id %}">Удалить</a></td>
           </tr>
         {% endwith %}
       {% endfor %}
-    </ul>
-  </div>
-      </tr>
     </tbody>
   </table>
   <p class="text-right">

@@ -3,11 +3,33 @@
 {% block title %}Детали заказа{% endblock title %}
 
 {% block content %}
-<div>
-    {% for item in order %}
-        {{item.product_id}}
-        {{item.price}}
-        {{item.quantity}}
-    {% endfor %}
-</div>
+<table class="cart_detail">
+    <thead>
+      <tr class="spaceUnder">
+        <th>Наименование товара</th>
+        <th>Картинка</th>
+        <th>Стоимость</th>
+        <th>Колличество</th>
+        <th>Изменить статус</th>
+      </tr>
+    </thead>
+     <tbody>
+     {% for item in order %}
+        {% for i in product %}
+            {% if i.id == item.product_id %}
+    <tr class="spaceUnder">
+        <td>{{i.name}}</td>
+        <td><img class="img-product" src="{{i.poster.url}}"></td>
+        <td>{{item.price}}</td>
+        <td>{{item.quantity}}</td>
+        <td><form action="#">
+         <button type="submit">Аннулировать</button>
+        </form></td>
+    </tr>
+     {% endif %}
+     {% endfor %}
+     {% endfor %}
+    </tbody>
+</table>
+
 {% endblock %}

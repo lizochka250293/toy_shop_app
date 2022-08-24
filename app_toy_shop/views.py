@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
@@ -106,3 +107,18 @@ class AddReview(View):
             return render(request, 'toy_shop/product_detail.html', {'product': product})
         else:
             return redirect('login_view')
+
+
+def contanc(request):
+    """Контакты"""
+    return render(request, 'toy_shop/contact.html')
+
+
+def delivery(request):
+    """Доставка"""
+    return render(request, 'toy_shop/delivery.html')
+
+
+def refund(request):
+    """Возрат"""
+    return render(request, 'toy_shop/refund.html')
