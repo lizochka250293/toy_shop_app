@@ -1,0 +1,100 @@
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+
+
+# Create your views here.
+from admin_app.forms import ProductDetailForm
+from app_toy_shop.models import Product
+from orders.form import OrderListForm
+from orders.models import Order, OrderItem
+
+
+def all_product(request):
+    if request.user.is_superuser:
+        products = Product.objects.all()
+        return render(request, 'admin_app/all_product.html', {'products': products})
+    else:
+        return redirect('shop:title')
+
+
+def product_detail(request, pk):
+    if request.user.is_superuser:
+        product = Product.objects.get(id=pk)
+        if request.method == 'POST':
+            form = ProductDetailForm(request.POST, initial={'name': product.name,
+                                                            'description': product.description,
+                                                            'price': product.price,
+                                                            'poster': product.poster,
+                                                            'category': product.category,
+                                                            'quantity': product.quantity,
+                                                            'is_active': product.is_active})
+            if form.is_valid():
+                product.name = form.cleaned_data['name']
+                product.description = form.cleaned_data['description']
+                product.price = form.cleaned_data['price']
+                product.poster = form.cleaned_data['poster']
+                product.category = form.cleaned_data['category']
+                product.quantity = form.cleaned_data['quantity']
+                product.is_active = form.cleaned_data['is_active']
+                product.save()
+            return redirect('admin_app:all_product')
+        else:
+            form = ProductDetailForm(initial={'name': product.name,
+                                                            'description': product.description,
+                                                            'price': product.price,
+                                                            'poster': product.poster,
+                                                            'category': product.category,
+                                                            'quantity': product.quantity,
+                                                            'is_active': product.is_active})
+            return render(request, 'admin_app/product_detail.html', {'product': product, 'form': form})
+
+    else:
+        return redirect('shop:title')
+
+
+def add_product(request):
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            form = ProductDetailForm(request.POST)
+            if form.is_valid():
+                print(form.cleaned_data)
+                Product.objects.create(name=form.cleaned_data['name'],
+                                       description=form.cleaned_data['description'],
+                                       price=form.cleaned_data['price'],
+                                       poster=form.cleaned_data['poster'],
+                                       category=form.cleaned_data['category'],
+                                       quantity=form.cleaned_data['quantity'],
+                                       is_active=form.cleaned_data['is_active'])
+
+            return redirect('admin_app:all_product')
+            # return render(request, 'admin_app/add_product.html', {'form': form})
+        else:
+            form = ProductDetailForm()
+            return render(request, 'admin_app/add_product.html', {'form': form})
+
+@login_required
+def orders_list(request):
+    if request.user.is_superuser:
+        order_list = Order.objects.all()
+        return render(request, 'admin_app/orders_list.html',
+                          {'order_list': order_list})
+    else:
+        return redirect('shop:title')
+
+@login_required
+def order_detail(request, pk):
+    if request.user.is_superuser:
+        order_items = OrderItem.objects.filter(order_id=pk)
+        order = Order.objects.get(id=pk)
+        product = Product.objects.all()
+        if request.method == 'POST':
+            form = OrderListForm(request.POST, initial={'order_status': order.order_status})
+            if form.is_valid():
+                order.order_status = form.cleaned_data['order_status']
+                order.save()
+            return redirect('admin_app:orders_list')
+        else:
+            form = OrderListForm(initial={'order_status': order.order_status})
+        return render(request, 'admin_app/order_detail.html', {'order': order_items, 'form': form, 'product': product})
+    else:
+        return redirect('shop:title')

@@ -25,7 +25,7 @@
         <td>{{order.address}}</td>
         <td>{{ order.get_paid_display }}</td>
         <td>{{ order.get_order_status_display }}</td>
-        <td><form action="{% url 'orders:order_detail' order.id %}">
+        <td><form action="{% url 'admin_app:order_detail' order.id %}">
         <button type="submit">Посмотреть детали</button>
         </form></td>
     </tr>

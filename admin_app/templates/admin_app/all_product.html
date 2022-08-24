@@ -1,0 +1,43 @@
+{% extends "orders/base.html" %}
+
+{% block title %}Заказы{% endblock title %}
+
+{% block content %}
+<div class="add_product">
+<p> <a href="{% url 'admin_app:add_product' %}">Добавить продукт</a></p>
+<p> <a href="{% url 'admin_app:orders_list' %}">Заказы</a></p>
+<p> <a href="#">Чаты</a></p>
+</div>
+<table class="cart">
+    <thead>
+      <tr class="spaceUnder">
+        <th>id</th>
+        <th>Наименование</th>
+        <th>Картинка</th>
+        <th>Описание</th>
+        <th>Цена</th>
+        <th>Видимость</th>
+        <th>Колличество</th>
+        <th>Редактировать</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for product in products %}
+    <tr class="spaceUnder">
+        <td>{{product.id}}</td>
+        <td>{{product.name}}</td>
+        {% if product.poster %}
+            <td><img class="img-product" src="{{product.poster.url}}"></td>
+        {% endif %}
+        <td>{{product.description|slice:":255"}}</td>
+        <td>{{product.price}}</td>
+        <td>{{product.is_active}}</td>
+        <td>{{product.quantity}}</td>
+         <td><form action="{% url 'admin_app:product_detail' product.id %}">
+        <button type="submit">Редактировать</button>
+        </form></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

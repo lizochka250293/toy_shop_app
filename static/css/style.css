@@ -141,6 +141,11 @@ section {
 .aside-menu a {
 	color: #8f8f8f;
 }
+
+.add_product {
+    margin: 0 0 0 1200px;
+}
+
 .img-cart-product {
     width: 100px;
     height: 100px;
@@ -237,6 +242,10 @@ span.product-new-top {
 	color: #474747;
 	z-index: 0;
 	height: 300px;
+}
+.product_detail_admin {
+    margin: 0 0 0 250px;
+    padding: 10px;
 }
 @media only screen and (min-width: 450px) {
 	.product-wrapper {

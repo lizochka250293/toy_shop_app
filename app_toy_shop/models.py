@@ -22,6 +22,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name='Категория',
                                  related_name="category_product")
     url = models.SlugField(max_length=170, unique=True)
+    quantity = models.PositiveIntegerField('Колличество', default=1)
     is_active = models.BooleanField('Активность', default=True)
 
     def __str__(self):

@@ -17,7 +17,7 @@
             <div class="register">
             <header>
             {% if request.user.is_superuser %}
-                <li class="last"> <a href="{% url 'orders:orders_list' %}">Админ</a>
+                <li class="last"> <a href="{% url 'admin_app:all_product' %}">Админ</a>
             {% endif %}
 			{% if request.user.is_authenticated %}
 			<li class="last"> <a href="{% url 'user:user_room' user.id %}">Личный кабинет</a> | <a href="{% url 'user:logout' %}">Выйти</a></li>

@@ -28,7 +28,7 @@ class ToyImage(admin.TabularInline):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'price', 'get_image', 'is_active']
+    list_display = ['name', 'price', 'get_image', 'quantity', 'is_active']
     list_display_links = ['name']
     search_fields = ['name', 'category__name']
     list_editable = ('is_active',)
