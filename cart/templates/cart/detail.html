@@ -1,4 +1,4 @@
-{% extends "cart/base.html" %}
+{% extends "orders/base.html" %}
 {% load static %}
 
 {% block title %}
@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block content %}
+{% if cart %}
 <h1 class="basket_detail">Корзина покупок</h1>
 <table class="cart_detail">
     <thead>
@@ -78,9 +79,14 @@
     </tbody>
   </table>
   <p class="text-right">
-    <a href="{% url 'shop:title' %}" class="button light">В магазин</a>
     <a href="{% url 'orders:order_create' %}" class="button">
     Перейти к покупкам
 </a>
   </p>
+{% else %}
+<div class="user_room_order">
+<p>В Вашей корзине пусто</p>
+<a href="{% url 'shop:title' %}" class="button light">В магазин</a>
+</div>
+{% endif %}
 {% endblock %}

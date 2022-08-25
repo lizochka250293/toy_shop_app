@@ -1,12 +1,15 @@
-{% extends "orders/base.html" %}
+{% extends "admin_app/base.html" %}
 
 {% block title %}Заказы{% endblock title %}
 
 {% block content %}
-<div class="product_detail_admin">
-<form action="#" method="post">
+<div id="add_product">
+<form action="#" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    {% for f in form %}
+    <li class="reg_list"><label class="reg_title" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</li>
+    <div class="form-error">{{ f.errors }}</div>
+    {% endfor %}
     <button type="submit">Сохранить</button></td>
 </form>
 </div>

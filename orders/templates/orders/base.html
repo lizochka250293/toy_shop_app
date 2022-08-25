@@ -33,10 +33,10 @@
 		<nav>
 			<ul class="top-menu">
 				<li><a href="{% url 'shop:title' %}">Главная</a></li>
-				<li><a href="/services/">Адреса</a></li>
-				<li><a href="/partners/">Контакты</a></li>
-				<li><a href="/customers/">Доставка</a></li>
-				<li><a href="/projects/">Возврат</a></li>
+				<li><a href="{% url 'shop:contact' %}">Контакты</a></li>
+				<li><a href="{% url 'shop:delivery' %}">Доставка</a></li>
+				<li><a href="{% url 'shop:refund' %}">Возврат</a></li>
+                <li><a href="{% url 'chat:room' user.id %}">Задать вопрос</a></li>
 				<li><a href="{% url 'cart:cart_detail' %}">Корзина</a></li>
 			</ul>
 		</nav>

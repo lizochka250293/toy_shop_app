@@ -8,9 +8,9 @@ from .forms import CartAddProductForm
 
 @require_POST
 def cart_add(request, product_id):
+    """Добавление в корзину"""
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
-    print(product)
     form = CartAddProductForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
@@ -21,6 +21,7 @@ def cart_add(request, product_id):
 
 
 def cart_remove(request, product_id):
+    """Удаление товара из корзины"""
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)
@@ -28,14 +29,14 @@ def cart_remove(request, product_id):
 
 
 def cart_detail(request):
+    """Детали корзины"""
     cart = Cart(request)
     form = CartAddProductForm()
-    print('ok')
-    print(cart)
     return render(request, 'cart/detail.html', {'cart': cart, 'form': form})
 
 
 def cart_update(request, product_id):
+    """Обновление корзины"""
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     form = CartAddProductForm(request.POST)

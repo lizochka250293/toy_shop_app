@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
@@ -108,7 +107,7 @@ class AddReview(View):
         else:
             return redirect('login_view')
 
-
+# не правильно построен url
 def contanc(request):
     """Контакты"""
     return render(request, 'toy_shop/contact.html')

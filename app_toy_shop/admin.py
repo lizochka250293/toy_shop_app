@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import Category, Product, Image, Star, StarForProduct, Reviews, \
-    Room, Message
+from .models import Category, Product, Image, Star, StarForProduct, Reviews
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -63,14 +62,6 @@ class ReviewsAdmin(admin.ModelAdmin):
     search_fields = ['user', 'created', 'description']
 
 
-class RoomAdmin(admin.ModelAdmin):
-    list_display = ['number', 'admin', 'user']
-
-
-class MessageAdmin(admin.ModelAdmin):
-    list_display = ['room', 'user', 'date']
-    search_fields = ['user']
-
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
@@ -78,5 +69,3 @@ admin.site.register(Image, ImageAdmin)
 admin.site.register(Star, StarAdmin)
 admin.site.register(StarForProduct, StarForProductAdmin)
 admin.site.register(Reviews, ReviewsAdmin)
-admin.site.register(Room, RoomAdmin)
-admin.site.register(Message, MessageAdmin)

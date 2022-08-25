@@ -1,8 +1,8 @@
+from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 from user.models import User
-from user.validators import phone_validator
-from django import forms
+
 
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(label='Имя')

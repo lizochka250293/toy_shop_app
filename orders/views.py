@@ -1,23 +1,16 @@
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
 
-from app_toy_shop.models import Product
 from cart.cart import Cart
-from .form import OrderCreateForm, AddPayForm, OrderListForm
-from .models import Order, PayStatus
+from .form import OrderCreateForm, AddPayForm
 from .models import OrderItem
-
-
-
+from .models import PayStatus
 
 
 def order_create(request):
+    """Создание заказа"""
     cart = Cart(request)
     current_user = request.user
-    print(request.user.id)
     if request.user.is_authenticated:
         if request.method == 'POST':
             form = OrderCreateForm(request.POST)
@@ -33,7 +26,7 @@ def order_create(request):
                 h = OrderItem.objects.filter(order=order.id)
                 total = 0
                 for i in h:
-                    total += i.price*i.quantity
+                    total += i.price * i.quantity
                 total_int = int(total)
                 if order.paid == '1':
                     PayStatus.objects.create(user=request.user, order_id=order.id, total_price=total_int)
@@ -47,11 +40,11 @@ def order_create(request):
                       {'cart': cart, 'form': form})
 
     if not request.user.is_authenticated:
-        print('ok')
         return redirect('login_view')
 
 
 def add_pay(request):
+    """Выбор оплаты"""
     if request.method == 'POST':
         form = AddPayForm(request.POST)
         if form.is_valid():
@@ -60,31 +53,3 @@ def add_pay(request):
         form = AddPayForm()
 
     return render(request, 'orders/pay_card.html', {'form': form})
-
-@login_required
-def orders_list(request):
-    if request.user.is_superuser:
-        order_list = Order.objects.all()
-        return render(request, 'orders/orders_list.html',
-                          {'order_list': order_list})
-    else:
-        return redirect('shop:title')
-
-@login_required
-def order_detail(request, pk):
-    if request.user.is_superuser:
-        order_items = OrderItem.objects.filter(order_id=pk)
-        order = Order.objects.get(id=pk)
-        product = Product.objects.all()
-        if request.method == 'POST':
-            form = OrderListForm(request.POST, initial={'order_status': order.order_status})
-            if form.is_valid():
-                order.order_status = form.cleaned_data['order_status']
-                order.save()
-            return redirect('orders:orders_list')
-        else:
-            form = OrderListForm(initial={'order_status': order.order_status})
-        return render(request, 'orders/order_detail.html', {'order': order_items, 'form': form, 'product': product})
-    else:
-        return redirect('shop:title')
-

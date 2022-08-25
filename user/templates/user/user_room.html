@@ -1,7 +1,7 @@
-{% extends 'user/base.html' %}
+{% extends 'orders/base.html' %}
 
 {% block content %}
-
+{% if orders %}
 <h1 class="user_room">История заказов</h1>
 <table class="cart_user_detail">
     <thead>
@@ -22,8 +22,14 @@
         <td><form action="{% url 'user:user_order_detail' order.id %}">
             <button type="submit">Посмотреть детали</button>
             </form></td>
+        <td><form action="{% url 'user:order_cancel' order.id %}">
+            <button type="submit">Аннулировать</button>
+            </form></td>
     </tr>
      {% endfor %}
     </tbody>
 </table>
+{% else %}
+<p class="user_room_order">У Вас нет пока заказов</p>
+{% endif %}
 {% endblock %}

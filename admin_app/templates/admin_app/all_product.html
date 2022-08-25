@@ -1,13 +1,9 @@
-{% extends "orders/base.html" %}
+{% extends "admin_app/base.html" %}
 
 {% block title %}Заказы{% endblock title %}
 
 {% block content %}
-<div class="add_product">
-<p> <a href="{% url 'admin_app:add_product' %}">Добавить продукт</a></p>
-<p> <a href="{% url 'admin_app:orders_list' %}">Заказы</a></p>
-<p> <a href="#">Чаты</a></p>
-</div>
+<div class="all_product">
 <table class="cart">
     <thead>
       <tr class="spaceUnder">
@@ -19,6 +15,7 @@
         <th>Видимость</th>
         <th>Колличество</th>
         <th>Редактировать</th>
+        <th>Удалить</th>
       </tr>
     </thead>
     <tbody>
@@ -36,8 +33,12 @@
          <td><form action="{% url 'admin_app:product_detail' product.id %}">
         <button type="submit">Редактировать</button>
         </form></td>
+        <td><form action="{% url 'admin_app:product_delete' product.id %}">
+        <button type="submit">Удалить</button>
+        </form></td>
     </tr>
     {% endfor %}
     </tbody>
 </table>
+</div>
 {% endblock %}

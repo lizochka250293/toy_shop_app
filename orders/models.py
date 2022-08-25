@@ -51,6 +51,10 @@ class OrderItem(models.Model):
     def get_cost(self):
         return self.price * self.quantity
 
+    class Meta:
+        verbose_name = 'Детали заказа'
+        verbose_name_plural = 'Детали заказов'
+
 
 class PayStatus(models.Model):
     PAYMENT_STATUS = (
@@ -68,5 +72,9 @@ class PayStatus(models.Model):
 
     def __str__(self):
         return f'{self.order}'
+
+    class Meta:
+        verbose_name = 'Статус оплаты'
+        verbose_name_plural = 'Статусы оплаты'
 
 

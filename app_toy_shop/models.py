@@ -18,7 +18,7 @@ class Product(models.Model):
     name = models.CharField('Название', max_length=70)
     description = models.TextField('Описание')
     price = models.DecimalField('Цена', max_digits=7, decimal_places=2)
-    poster = models.ImageField("Постер", upload_to="photos/", blank=True)
+    poster = models.ImageField("Постер", upload_to="photos/")
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name='Категория',
                                  related_name="category_product")
     url = models.SlugField(max_length=170, unique=True)
@@ -88,32 +88,3 @@ class Reviews(models.Model):
         ordering = ('-created',)
 
 
-class Room(models.Model):
-    number = models.PositiveIntegerField('Номер комнаты')
-    admin = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True, verbose_name='Администратор',
-                              related_name="user_admin_room")
-    user = models.OneToOneField('user.User', on_delete=models.SET_NULL, null=True, verbose_name='Пользователь',
-                                related_name="user_room")
-
-    def __str__(self):
-        return f'{self.number} - {self.user}'
-
-    class Meta:
-        verbose_name = 'Комната'
-        verbose_name_plural = 'Комнаты'
-
-
-class Message(models.Model):
-    room = models.ForeignKey(Room, on_delete=models.CASCADE, verbose_name='Комната', related_name="number_room")
-    user = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True, verbose_name='Пользователь',
-                             related_name="user_message")
-    text = models.TextField('Текст сообщения')
-    date = models.DateTimeField('Дата', auto_now=True)
-    is_active = models.BooleanField('Статус', default=True)
-
-    def __str__(self):
-        return f'{self.user} - {self.text}'
-
-    class Meta:
-        verbose_name = 'Сообщение'
-        verbose_name_plural = 'Сообщения'
