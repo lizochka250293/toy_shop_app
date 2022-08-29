@@ -35,7 +35,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         print(text_data_json)
         message = text_data_json['message']
-        username = '5'
+        username = '3'
         print(message)
 
         await self.write_message(message, username)

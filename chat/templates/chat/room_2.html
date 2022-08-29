@@ -5,6 +5,7 @@
     <title>Chat Room</title>
 </head>
 <body>
+    {{cur_dialog}}
     {% if messages %}
     {% for message in messages %}
         {{message.user_id}}
@@ -16,7 +17,9 @@
     <input id="chat-message-submit" type="button" value="Send">
     {{ room_name|json_script:"room-name" }}
     {% if request.user.is_superuser %}
-     <button id="close-chat" type="button">Завершить диалог</button>
+        <form action="{% url 'chat:chat_close' cur_dialog %}">
+              <button type="submit">Завершить чат</button>
+        </form>
     {% endif %}
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
@@ -52,18 +55,6 @@
                 'message': message
             }));
             messageInputDom.value = '';
-
-        function closeChat(event) {
-            chatSocket.send(JSON.stringify({
-                'action': 'close',
-                'chat': dialog
-            }));
-            chatSocket.close()
-            let user = document.querySelector('#chat-message-user').value
-            window.location = `/all_product/`
-        }
-
-        document.querySelector('#close-chat').addEventListener('click', closeChat)
         };
     </script>
 </body>
