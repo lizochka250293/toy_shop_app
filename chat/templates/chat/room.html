@@ -3,11 +3,52 @@
 {% block title %}Заказы{% endblock title %}
 
 {% block content %}
-<body>
-    <textarea id="chat-log" cols="100" rows="20"></textarea><br>
-    <input id="chat-message-input" type="text" size="100"><br>
-    <input id="chat-message-submit" type="button" value="Отправить">
-    {{ room_name|json_script:"room-name" }}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Чат</title>
+</head>
+
+<div class="body_message">
+    <header></header>
+    <main>
+        <div class="chat-box">
+            <div class="messages">
+                <div class="message">
+                    <div class="message__data">
+                        <p class="admin-user">Username</p>
+                        <p>12:00</p>
+                    </div>
+                    <div class="message__body">
+                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Architecto, eligendi. Minima ipsum ut
+                            ullam
+                            magnam dignissimos odit maiores qui vero! Libero, reiciendis. Placeat totam eaque quos id fugit
+                            dolor quisquam.</p>
+                    </div>
+                </div>
+                <div class="message">
+                    <div class="message__data">
+                        <p class="admin-user">Toy_shop_admin</p>
+                        <p>12:00</p>
+                    </div>
+                    <div class="message__body">
+                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Architecto, eligendi. Minima ipsum ut
+                            ullam
+                            magnam dignissimos odit maiores qui vero! Libero, reiciendis. Placeat totam eaque quos id fugit
+                            dolor quisquam.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="chat__input">
+                <textarea name="message" id="id_message" rows="10" placeholder="Текст сообщения"></textarea>
+                <button type="submit">Отправить</button>
+                {{ dialog|json_script:"dialog" }}
+                <button id="close-chat" type="button">Завершить диалог</button>
+            </div>
+        </div>
+    </main>
+</div>
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
@@ -44,7 +85,7 @@
             messageInputDom.value = '';
         };
     </script>
-</body>
+</div>
 
 {% endblock %}
 

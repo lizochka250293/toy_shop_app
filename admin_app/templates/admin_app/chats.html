@@ -1,0 +1,10 @@
+{% extends "admin_app/base.html" %}
+
+{% block title %}Детали заказа{% endblock title %}
+
+{% block content %}
+{% for chat in chats %}
+<p>{{chat.id}}</p>
+<a href="{% url 'chat:room' chat.id %}">Перейти в диалог {{chat.id}}</a>
+{% endfor %}
+{% endblock %}

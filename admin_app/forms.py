@@ -13,9 +13,3 @@ class ProductDetailForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ["name", "description", "price", "poster", "category", "quantity", "is_active"]
-
-
-# class ProductDeleteForm(forms.Form):
-#
-#     class Meta:
-#         model = Product

@@ -3,6 +3,10 @@
 {% block title %}Ваши покупки{% endblock title %}
 
 {% block content %}
+{% if info %}
+{{info}}
+<p><a href="{% url 'cart:cart_detail' %}">Перейти в корзину</a></p>
+{% else %}
 <div>
     <h1>Заказать</h1>
     <div class="">
@@ -23,4 +27,5 @@
         {% csrf_token %}
     </form>
     </div>
+{% endif %}
 {% endblock %}

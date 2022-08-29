@@ -34,6 +34,8 @@ class ToyDetailView(GetCategory, FormMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        product = self.get_object()
+        context['form'] = CartAddProductForm(count=product.quantity)
         context['star_form'] = RatingForm()
         return context
 
@@ -44,7 +46,6 @@ class FilterProductView(GetCategory, ListView):
 
     def get_queryset(self):
         queryset = Product.objects.filter(category__name__in=self.request.GET.getlist('category'))
-        print(queryset)
         return queryset
 
 

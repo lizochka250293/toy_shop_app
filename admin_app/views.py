@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from transliterate import translit
 
 # Create your views here.
 from admin_app.forms import ProductDetailForm
 from app_toy_shop.models import Product
+from chat.models import ChatDialog
 from orders.form import OrderListForm
 from orders.models import Order, OrderItem
 
@@ -60,7 +62,8 @@ def add_product(request):
             form = ProductDetailForm(request.POST, request.FILES)
             if form.is_valid():
                 product = form.save(commit=False)
-                url = form.cleaned_data['name'].lower().replace(' ', '_')
+                name = form.cleaned_data['name'].lower().replace(' ', '_')
+                url = translit(name, language_code='ru', reversed=True)
                 product.url = url
                 product.save()
             return redirect('admin_app:all_product')
@@ -102,6 +105,7 @@ def order_detail(request, pk):
 
 @login_required
 def product_delete(request, pk):
+    """Удаление продукта"""
     if request.user.is_superuser:
         product = Product.objects.get(id=pk)
         product.delete()
@@ -109,3 +113,8 @@ def product_delete(request, pk):
     else:
         return redirect('shop:title')
 
+
+def chats(request):
+    chats = ChatDialog.objects.filter(is_active=True)
+    print(chats)
+    return render(request, 'admin_app/chats.html', {'chats': chats})
