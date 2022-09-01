@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from transliterate import translit
 
 # Create your views here.
-from admin_app.forms import ProductDetailForm
+from admin_app.forms import ProductDetailForm, StocksForm
 from app_toy_shop.models import Product
 from chat.models import ChatDialog
 from orders.form import OrderListForm
@@ -119,3 +119,16 @@ def chats(request):
     chats = ChatDialog.objects.filter(is_active=True)
     print(chats)
     return render(request, 'admin_app/chats.html', {'chats': chats})
+
+
+def stocks(request):
+    """Акции"""
+    if request.method == 'POST':
+        form = StocksForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+            return redirect('admin_app:all_product')
+    else:
+        form = StocksForm()
+        return render(request, 'admin_app/stocks.html', {'form': form})
+

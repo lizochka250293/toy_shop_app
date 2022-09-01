@@ -1,6 +1,6 @@
 {% extends "orders/base.html" %}
 
-{% block title %}Заказы{% endblock title %}
+{% block title %}Чат{% endblock title %}
 
 {% block content %}
 
@@ -9,19 +9,18 @@
     <main>
         <div class="chat-box">
             <div class="messages" id="list_message">
-            <div class="message">
+                {% if messages %}
+                {% for message in messages %}
+                <div class="message">
                     <div class="message__data">
                         <p class="admin-user">Администратор магазина игрушек</p>
-                        <p>{{message.create_at}}</p>
                     </div>
                     <div class="message__body">
-                        <p>{{message.body}}</p>
+                        <p>{{admin_message.body}}</p>
                     </div>
                 </div>
                 <div class="message">
                     <div class="message__data">
-                        {% if messages %}
-                        {% for message in messages %}
                         <p class="admin-user">{{message.user_id}}</p>
                         <p>{{message.create_at}}</p>
                     </div>
@@ -29,17 +28,15 @@
                         <p>{{message.body}}</p>
                     </div>
                 </div>
+                {% endfor %}
+                {% endif %}
             </div>
-            {% endfor %}
-            {% endif %}
             <div class="chat__input">
                 <textarea name="message" id="id_message" rows="10" placeholder="Текст сообщения"></textarea>
                 <button type="submit" id="btn-send">Отправить</button>
                 {{ room_name|json_script:"room-name" }}
                 {% if request.user.is_superuser %}
-                <form action="{% url 'chat:chat_close' room_name %}">
-                      <button type="submit">Завершить чат</button>
-                </form>
+                <button id="close-chat" type="button">Завершить диалог</button>
                 {% endif %}
             </div>
         </div>
@@ -49,6 +46,7 @@
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const listMessage = document.getElementById('list_message')
         document.getElementById('btn-send').addEventListener('click', sendMessage)
+        document.querySelector('#close-chat').addEventListener('click', closeChat)
 
 
         const chatSocket = new WebSocket(
@@ -99,6 +97,17 @@
             }));
             message.value = ''
         }
+
+        function closeChat(event) {
+            chatSocket.send(JSON.stringify({
+                'action': 'close',
+                'chat': dialog
+            }));
+            chatSocket.close()
+            //let user = document.querySelector('#chat-message-user').value
+            window.location = `/admin_app:chats/`
+        }
+
 
     </script>
 </div>

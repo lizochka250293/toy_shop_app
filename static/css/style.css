@@ -31,6 +31,9 @@ html, body {
     margin: 0 0 5px 1200px;
     list-style: none;
 }
+.stocks {
+    margin: 25px 50px 0 400px;
+}
 .basket_detail {
     margin: 0 0 0 200px;
 }

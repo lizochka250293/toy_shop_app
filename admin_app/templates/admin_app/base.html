@@ -33,7 +33,7 @@
 		<nav>
 			<ul class="top-menu">
 				<li><a href="{% url 'shop:title' %}">Сайт</a></li>
-				<li><a href="{% url 'shop:contact' %}">Контакты</a></li>
+				<li><a href="{% url 'admin_app:stocks' %}">Добавить акцию</a></li>
 				<li><a href="{% url 'admin_app:all_product' %}">Все товары</a></li>
 				<li><a href="{% url 'admin_app:add_product' %}">Добавить продукт</a></li>
                 <li><a href="{% url 'admin_app:chats' %}">Чаты</a></li>
@@ -44,10 +44,7 @@
     {% block content %}
     {% endblock content %}
 
-<div class="footer">
-    <p>&copy; Все права защищены.
-    <p>&nbsp;
-</div>
+
     </div>
 </div>
 <script src="{% static 'js/scripts.js' %}"></script>

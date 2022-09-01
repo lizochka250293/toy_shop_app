@@ -33,6 +33,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
+        print(text_data_json)
+        if text_data_json.get('action') == 'close':
+            await self.chat_close(text_data_json.get('chat'))
+            return
+
         message = text_data_json['message']
         username = self.scope["user"]
         print(username, type(username))
@@ -72,3 +77,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             dialog.save()
         print(dialog.is_active)
         ChatMessage.objects.create(dialog_id=dialog.id, body=message, user_id=User.objects.get(username=username).id)
+
+    @database_sync_to_async
+    def chat_close(self, dialog):
+        dialog_close = ChatDialog.objects.get(id=dialog)
+        dialog_close.is_active = False
+        dialog_close.save()

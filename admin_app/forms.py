@@ -13,3 +13,7 @@ class ProductDetailForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ["name", "description", "price", "poster", "category", "quantity", "is_active"]
+
+
+class StocksForm(forms.Form):
+    title = forms.CharField(label='Акция', widget=forms.Textarea(attrs={'cols': 60, 'rows': 10}))

@@ -1,0 +1,13 @@
+{% extends "admin_app/base.html" %}
+
+{% block title %}Добавить продукт{% endblock title %}
+
+{% block content %}
+<div class="stocks">
+    <form action="{% url 'admin_app:stocks' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Добавить</button>
+    </form>
+</div>
+{% endblock %}
