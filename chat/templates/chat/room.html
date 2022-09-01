@@ -3,54 +3,53 @@
 {% block title %}Заказы{% endblock title %}
 
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <title>Чат</title>
-</head>
 
 <div class="body_message">
     <header></header>
     <main>
         <div class="chat-box">
-            <div class="messages">
-                <div class="message">
+            <div class="messages" id="list_message">
+            <div class="message">
                     <div class="message__data">
-                        <p class="admin-user">Username</p>
-                        <p>12:00</p>
+                        <p class="admin-user">Администратор магазина игрушек</p>
+                        <p>{{message.create_at}}</p>
                     </div>
                     <div class="message__body">
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Architecto, eligendi. Minima ipsum ut
-                            ullam
-                            magnam dignissimos odit maiores qui vero! Libero, reiciendis. Placeat totam eaque quos id fugit
-                            dolor quisquam.</p>
+                        <p>{{message.body}}</p>
                     </div>
                 </div>
                 <div class="message">
                     <div class="message__data">
-                        <p class="admin-user">Toy_shop_admin</p>
-                        <p>12:00</p>
+                        {% if messages %}
+                        {% for message in messages %}
+                        <p class="admin-user">{{message.user_id}}</p>
+                        <p>{{message.create_at}}</p>
                     </div>
                     <div class="message__body">
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Architecto, eligendi. Minima ipsum ut
-                            ullam
-                            magnam dignissimos odit maiores qui vero! Libero, reiciendis. Placeat totam eaque quos id fugit
-                            dolor quisquam.</p>
+                        <p>{{message.body}}</p>
                     </div>
                 </div>
             </div>
+            {% endfor %}
+            {% endif %}
             <div class="chat__input">
                 <textarea name="message" id="id_message" rows="10" placeholder="Текст сообщения"></textarea>
-                <button type="submit">Отправить</button>
-                {{ dialog|json_script:"dialog" }}
-                <button id="close-chat" type="button">Завершить диалог</button>
+                <button type="submit" id="btn-send">Отправить</button>
+                {{ room_name|json_script:"room-name" }}
+                {% if request.user.is_superuser %}
+                <form action="{% url 'chat:chat_close' room_name %}">
+                      <button type="submit">Завершить чат</button>
+                </form>
+                {% endif %}
             </div>
         </div>
     </main>
 </div>
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        const listMessage = document.getElementById('list_message')
+        document.getElementById('btn-send').addEventListener('click', sendMessage)
+
 
         const chatSocket = new WebSocket(
             'ws://'
@@ -62,7 +61,23 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
+            console.log(data)
+            const frag = document.createRange().createContextualFragment(
+            `
+            <div class="message">
+                <div class="message__data">
+                    <p class="admin-user">${data.username}</p>
+                    <p>12:00</p>
+                </div>
+                <div class="message__body">
+                    <p>${data.message}</p>
+                </div>
+            </div>
+            `
+            );
+            listMessage.appendChild(frag)
+
+            //document.querySelector('#chat-log').value += (data.message + '\n');
         };
 
         chatSocket.onclose = function(e) {
@@ -76,14 +91,15 @@
             }
         };
 
-        document.querySelector('#chat-message-submit').onclick = function(e) {
-            const messageInputDom = document.querySelector('#chat-message-input');
-            const message = messageInputDom.value;
+        function sendMessage() {
+            let message = document.getElementById('id_message')
+            console.log(message)
             chatSocket.send(JSON.stringify({
-                'message': message
+                'message': message.value
             }));
-            messageInputDom.value = '';
-        };
+            message.value = ''
+        }
+
     </script>
 </div>
 

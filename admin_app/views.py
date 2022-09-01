@@ -115,5 +115,7 @@ def product_delete(request, pk):
 
 
 def chats(request):
+    """Активные чаты"""
     chats = ChatDialog.objects.filter(is_active=True)
+    print(chats)
     return render(request, 'admin_app/chats.html', {'chats': chats})

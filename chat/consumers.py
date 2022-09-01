@@ -33,11 +33,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        print(text_data_json)
         message = text_data_json['message']
-        username = '3'
-        print(message)
-
+        username = self.scope["user"]
+        print(username, type(username))
         await self.write_message(message, username)
 
         # Send message to room group
@@ -45,7 +43,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': message
+                'message': message,
+                'username': await self.get_username(username)
             }
         )
 
@@ -55,12 +54,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'message': message
+            'message': event['message'],
+            'username': event['username']
         }))
 
+    @database_sync_to_async
+    def get_username(self, username):
+        user = User.objects.get(username=username).username
+        print('user', user)
+        return user
 
     @database_sync_to_async
     def write_message(self, message, username):
-        dialog = ChatDialog.objects.filter(user_id=username, is_active=True).last()
-        print(dialog.id)
-        ChatMessage.objects.create(dialog_id=dialog.id, body=message, user_id=User.objects.get(id=username).id)
+        dialog = ChatDialog.objects.get(id=self.room_name)
+        if not dialog.is_active:
+            dialog.is_active = True
+            dialog.save()
+        print(dialog.is_active)
+        ChatMessage.objects.create(dialog_id=dialog.id, body=message, user_id=User.objects.get(username=username).id)

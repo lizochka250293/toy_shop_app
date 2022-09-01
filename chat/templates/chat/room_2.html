@@ -5,7 +5,8 @@
     <title>Chat Room</title>
 </head>
 <body>
-    {{cur_dialog}}
+<p>{{cur_dialog}}</p>
+
     {% if messages %}
     {% for message in messages %}
         {{message.user_id}}
@@ -14,10 +15,10 @@
     {% endif %}
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
     <input id="chat-message-input" type="text" size="100"><br>
-    <input id="chat-message-submit" type="button" value="Send">
+    <input id="chat-message-submit" type="button" value="Отправить">
     {{ room_name|json_script:"room-name" }}
     {% if request.user.is_superuser %}
-        <form action="{% url 'chat:chat_close' cur_dialog %}">
+        <form action="{% url 'chat:chat_close' room_name %}">
               <button type="submit">Завершить чат</button>
         </form>
     {% endif %}

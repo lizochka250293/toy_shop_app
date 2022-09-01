@@ -4,7 +4,7 @@ from django.db import models
 
 class ChatDialog(models.Model):
     start_date = models.DateTimeField('Дата создания', auto_now=True)
-    is_active = models.BooleanField('Активность', default=True)
+    is_active = models.BooleanField('Активность', default=False)
     user = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name='пользователь',
                                related_name='user_dialogs', default='1')
 
