@@ -20,8 +20,12 @@ class ChatDialog(models.Model):
 
 
 class ChatMessage(models.Model):
-    user = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name='пользователь',
-                               related_name='user_messages')
+    user = models.ForeignKey(
+        'user.User',
+        on_delete=models.CASCADE,
+        verbose_name='пользователь',
+        related_name='user_messages'
+    )
     dialog = models.ForeignKey(ChatDialog, on_delete=models.CASCADE, verbose_name='диалог',
                                related_name='dialog_messages')
     create_at = models.DateTimeField('Дата', auto_now=True)

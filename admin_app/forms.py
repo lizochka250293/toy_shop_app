@@ -1,7 +1,7 @@
 from django import forms
 
-from app_toy_shop.models import Product
-
+from app_toy_shop.models import Product, Image
+from django.forms import formset_factory
 
 class ProductDetailForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -17,3 +17,12 @@ class ProductDetailForm(forms.ModelForm):
 
 class StocksForm(forms.Form):
     title = forms.CharField(label='Акция', widget=forms.Textarea(attrs={'cols': 60, 'rows': 10}))
+
+
+class ImageProductForm(forms.ModelForm):
+
+    class Meta:
+        model = Image
+        fields = ['link']
+
+ImageProductFormSet = formset_factory(ImageProductForm, extra=3)

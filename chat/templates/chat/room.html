@@ -13,15 +13,7 @@
                 {% for message in messages %}
                 <div class="message">
                     <div class="message__data">
-                        <p class="admin-user">Администратор магазина игрушек</p>
-                    </div>
-                    <div class="message__body">
-                        <p>{{admin_message.body}}</p>
-                    </div>
-                </div>
-                <div class="message">
-                    <div class="message__data">
-                        <p class="admin-user">{{message.user_id}}</p>
+                        <p class="admin-user">{{message.user.username}}</p>
                         <p>{{message.create_at}}</p>
                     </div>
                     <div class="message__body">
@@ -46,7 +38,7 @@
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const listMessage = document.getElementById('list_message')
         document.getElementById('btn-send').addEventListener('click', sendMessage)
-        document.querySelector('#close-chat').addEventListener('click', closeChat)
+
 
 
         const chatSocket = new WebSocket(
@@ -82,12 +74,12 @@
             console.error('Chat socket closed unexpectedly');
         };
 
-        document.querySelector('#chat-message-input').focus();
-        document.querySelector('#chat-message-input').onkeyup = function(e) {
-            if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#chat-message-submit').click();
-            }
-        };
+       // document.querySelector('#chat-message-input').focus();
+      //  document.querySelector('#chat-message-input').onkeyup = function(e) {
+      //      if (e.keyCode === 13) {  // enter, return
+      //          document.querySelector('#chat-message-submit').click();
+      //      }
+      //  };
 
         function sendMessage() {
             let message = document.getElementById('id_message')
@@ -101,12 +93,13 @@
         function closeChat(event) {
             chatSocket.send(JSON.stringify({
                 'action': 'close',
-                'chat': dialog
+                'chat': roomName
             }));
             chatSocket.close()
             //let user = document.querySelector('#chat-message-user').value
-            window.location = `/admin_app:chats/`
+            window.location = '/admin_app/chats/'
         }
+        document.getElementById('close-chat').addEventListener('click', closeChat)
 
 
     </script>
