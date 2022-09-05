@@ -163,8 +163,8 @@ def stocks(request):
         form = StocksForm(request.POST)
         if form.is_valid():
             print(form.cleaned_data)
-            users_phone = '55555'
-            send_for_users_phone.delay(users_phone)
+            phones = '55555'
+            send_for_users_phone.delay(phones)
             return redirect('admin_app:all_product')
     else:
         form = StocksForm()
