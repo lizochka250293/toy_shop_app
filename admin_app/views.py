@@ -12,6 +12,7 @@ from orders.models import Order, OrderItem
 from user.models import User
 from .tasks import send_for_users_phone
 
+
 def all_product(request):
     """Вывод всех продуктов для администратора"""
     if request.user.is_superuser:
@@ -36,10 +37,8 @@ def product_detail(request, pk):
             form_image = ImageProductFormSet(request.POST, request.FILES, initial=images_product)
             if form.is_valid():
                 form.save()
-            print('error', form_image.errors)
             if form_image.is_valid():
                 images.delete()
-                print('ok')
                 product_id = Product.objects.get(name=product.name).id
                 for p in form_image:
                     product_image = p.save(commit=False)
@@ -58,9 +57,10 @@ def product_detail(request, pk):
                 link = {}
                 link['link'] = image.link
                 images_product.append(link)
-            ImageProductFormSet2 = formset_factory(ImageProductForm, extra=3-len(images_product))
+            ImageProductFormSet2 = formset_factory(ImageProductForm, extra=3 - len(images_product))
             form_image = ImageProductFormSet2(initial=images_product)
-            return render(request, 'admin_app/product_detail.html', {'product': product, 'form': form, 'form_image': form_image})
+            return render(request, 'admin_app/product_detail.html',
+                          {'product': product, 'form': form, 'form_image': form_image})
 
     else:
         return redirect('shop:title')
@@ -157,7 +157,6 @@ def stocks(request):
     else:
         form = StocksForm()
         return render(request, 'admin_app/stocks.html', {'form': form})
-
 
 # def add_product_images(request, pk):
 #     """Редактировать изображения товара"""
