@@ -6,18 +6,12 @@
 <div class="product_detail_admin">
 <img class="img-product" src="{{product.poster.url}}">
 
-<form action="{% url 'admin_app:product_detail' product.id %}" method="post">
+<form action="{% url 'admin_app:product_detail' product.id %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
+    {{ form_image.as_p }}
     <button type="submit">Сохранить изменения</button></td>
 </form>
 </div>
 
-<div>
-<form action="{% url 'admin_app:add_product_images' product.id %}" method="post">
-    {% csrf_token %}
-    {{ form_image.as_p }}
-    <button type="submit">Сохранить</button>
-</form>
-</div>
 {% endblock %}

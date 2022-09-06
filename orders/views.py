@@ -7,13 +7,12 @@ from .form import OrderCreateForm, AddPayForm
 from .models import OrderItem
 from .models import PayStatus
 
-# cart.clean()
+
+
 def order_create(request):
     """Создание заказа"""
     cart = Cart(request)
     for i in cart:
-        print(i['quantity'])
-        print(i['product'].id)
         cur_product = Product.objects.get(id=i['product'].id).quantity
         if cur_product >= i['quantity']:
             current_user = request.user
@@ -47,7 +46,7 @@ def order_create(request):
                         if order.paid == '1':
                             PayStatus.objects.create(user=request.user, order_id=order.id, total_price=total_int)
                             cart.clear()
-                            return render(request, 'orders/pay_card.html', {'order': order})
+                            return redirect('orders:add_pay')
                         cart.clear()
                         return render(request, 'orders/created.html',
                                           {'order': order, 'user': current_user})

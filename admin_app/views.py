@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.forms import formset_factory
 from django.shortcuts import render, redirect
 from transliterate import translit
 
@@ -24,56 +25,42 @@ def product_detail(request, pk):
     """Детали продуктов для администратора"""
     if request.user.is_superuser:
         product = Product.objects.get(id=pk)
+        images = Image.objects.filter(product_id=product.id)
+        images_product = []
+        for image in images:
+            link = {}
+            link['link'] = image.link
+            images_product.append(link)
         if request.method == 'POST':
-            form = ProductDetailForm(request.POST, initial={'name': product.name,
-                                                            'description': product.description,
-                                                            'price': product.price,
-                                                            'poster': product.poster,
-                                                            'category': product.category,
-                                                            'quantity': product.quantity,
-                                                            'is_active': product.is_active})
-            # form_image = ImageProductFormSet(request.POST, request.FILES)
+            form = ProductDetailForm(data=request.POST, instance=product)
+            form_image = ImageProductFormSet(request.POST, request.FILES, initial=images_product)
             if form.is_valid():
-                product.name = form.cleaned_data['name']
-                product.description = form.cleaned_data['description']
-                product.price = form.cleaned_data['price']
-                product.poster = form.cleaned_data['poster']
-                product.category = form.cleaned_data['category']
-                product.quantity = form.cleaned_data['quantity']
-                product.is_active = form.cleaned_data['is_active']
-                product.save()
+                form.save()
+            print('error', form_image.errors)
+            if form_image.is_valid():
+                images.delete()
+                print('ok')
                 product_id = Product.objects.get(name=product.name).id
-                print(product_id)
-            # if form_image.is_valid:
-            #     print('ok')
-            #     for p in form_image:
-            #         print(p)
-            #         product_image = p.save(commit=False)
-            #         print(product_image)
-                    # product_image.product_id = product_id
-                    # try:
-                    #     p.cleaned_data['link']
-                    #     product_image.link = p.cleaned_data['link']
-                    #     product_image.save()
-                    # except:
-                    #     pass
+                for p in form_image:
+                    product_image = p.save(commit=False)
+                    link = p.cleaned_data.get('link')
+                    if link is not None:
+                        product_image.product_id = product_id
+                        product_image.link = link
+                        product_image.save()
+
             return redirect('admin_app:all_product')
         else:
-            form = ProductDetailForm(initial={'name': product.name,
-                                              'description': product.description,
-                                              'price': product.price,
-                                              'poster': product.poster,
-                                              'category': product.category,
-                                              'quantity': product.quantity,
-                                              'is_active': product.is_active})
-            # images = Image.objects.filter(product_id=product.id)
-            # images_product = []
-            # for image in images:
-            #     link = {}
-            #     link['link'] = image.link
-            #     images_product.append(link)
-            # form_image = ImageProductFormSet(initial=images_product)
-            return render(request, 'admin_app/product_detail.html', {'product': product, 'form': form})
+            form = ProductDetailForm(instance=product)
+            images = Image.objects.filter(product_id=product.id)
+            images_product = []
+            for image in images:
+                link = {}
+                link['link'] = image.link
+                images_product.append(link)
+            ImageProductFormSet2 = formset_factory(ImageProductForm, extra=3-len(images_product))
+            form_image = ImageProductFormSet2(initial=images_product)
+            return render(request, 'admin_app/product_detail.html', {'product': product, 'form': form, 'form_image': form_image})
 
     else:
         return redirect('shop:title')
@@ -91,17 +78,15 @@ def add_product(request):
                 url = translit(name, language_code='ru', reversed=True)
                 product.url = url
                 product.save()
-                product_id = Product.objects.get(name=name).id
+                product_id = Product.objects.get(name=form.cleaned_data['name']).id
                 for p in form_image:
                     product_image = p.save(commit=False)
-
-                    product_image.product_id = product_id
-                    try:
-                        p.cleaned_data['link']
-                        product_image.link = p.cleaned_data['link']
+                    link = p.cleaned_data.get('link')
+                    if link is not None:
+                        product_image.product_id = product_id
+                        product_image.link = link
                         product_image.save()
-                    except:
-                        pass
+
             return redirect('admin_app:all_product')
         else:
             form = ProductDetailForm()
@@ -162,27 +147,30 @@ def stocks(request):
     if request.method == 'POST':
         form = StocksForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
-            phones = '55555'
-            send_for_users_phone.delay(phones)
+            stock = form.cleaned_data['title']
+            phones = User.objects.values('phone')
+            phone_list = []
+            for phone in phones:
+                phone_list.append(phone['phone'])
+            send_for_users_phone.delay(phone_list, stock)
             return redirect('admin_app:all_product')
     else:
         form = StocksForm()
         return render(request, 'admin_app/stocks.html', {'form': form})
 
 
-def add_product_images(request, pk):
-    """Редактировать изображения товара"""
-    if request.method == 'POST':
-        pass
-
-    else:
-        images = Image.objects.filter(product_id=pk)
-        images_product = []
-        for image in images:
-            link = {}
-            link['link'] = image.link
-            images_product.append(link)
-        form_image = ImageProductFormSet(initial=images_product)
-        print(form_image)
-        return render(request, 'admin_app/product_detail.html', {'form_image': form_image})
+# def add_product_images(request, pk):
+#     """Редактировать изображения товара"""
+#     if request.method == 'POST':
+#         pass
+#
+#     else:
+#         images = Image.objects.filter(product_id=pk)
+#         images_product = []
+#         for image in images:
+#             link = {}
+#             link['link'] = image.link
+#             images_product.append(link)
+#         form_image = ImageProductFormSet(initial=images_product)
+#         print(form_image)
+#         return render(request, 'admin_app/product_detail.html', {'form_image': form_image})

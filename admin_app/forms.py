@@ -25,4 +25,6 @@ class ImageProductForm(forms.ModelForm):
         model = Image
         fields = ['link']
 
+
 ImageProductFormSet = formset_factory(ImageProductForm, extra=3)
+ImageProductFormSetUpdate = formset_factory(ImageProductForm, extra=0)
