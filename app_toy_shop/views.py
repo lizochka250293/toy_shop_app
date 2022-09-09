@@ -108,8 +108,8 @@ class AddReview(View):
         else:
             return redirect('login_view')
 
-# не правильно построен url
-def contanc(request):
+
+def contact(request):
     """Контакты"""
     return render(request, 'toy_shop/contact.html')
 

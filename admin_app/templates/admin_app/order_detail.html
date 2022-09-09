@@ -3,6 +3,7 @@
 {% block title %}Детали заказа{% endblock title %}
 
 {% block content %}
+{{orders.order_status}}
 <table class="cart_detail">
     <thead>
       <tr class="spaceUnder">
@@ -23,7 +24,7 @@
         <td><img class="img-product" src="{{i.poster.url}}"></td>
         <td>{{item.price}}</td>
         <td>{{item.quantity}}</td>
-        <td><form action="#" method="post">
+        <td><form action="" method="post">
             {% csrf_token %}
             {{ form.as_p }}
         <td>    <button type="submit">Изменить статус</button></td>

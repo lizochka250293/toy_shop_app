@@ -3,6 +3,7 @@ from django import forms
 from app_toy_shop.models import Product, Image
 from django.forms import formset_factory
 
+
 class ProductDetailForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

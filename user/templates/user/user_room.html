@@ -22,9 +22,9 @@
         <td><form action="{% url 'user:user_order_detail' order.id %}">
             <button type="submit">Посмотреть детали</button>
             </form></td>
-        <td><form action="{% url 'user:order_cancel' order.id %}">
+        <td><form action="{% url 'user:product_delete' order.id %}">
             <button type="submit">Аннулировать</button>
-            </form></td>
+        </form></td>
     </tr>
      {% endfor %}
     </tbody>

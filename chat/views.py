@@ -31,9 +31,3 @@ def room(request, room_name):
     else:
         return redirect('user:login_view')
 
-
-# def chat_close(request, cur_dialog):
-#     dialog = ChatDialog.objects.get(id=cur_dialog)
-#     dialog.is_active = False
-#     dialog.save()
-#     return redirect('admin_app:chats')

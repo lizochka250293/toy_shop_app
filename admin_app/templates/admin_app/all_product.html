@@ -30,12 +30,13 @@
         <td>{{product.price}}</td>
         <td>{{product.is_active}}</td>
         <td>{{product.quantity}}</td>
-         <td><form action="{% url 'admin_app:product_detail' product.id %}">
+         <td><form action="{% url 'admin_app:product_detail' product.url %}">
         <button type="submit">Редактировать</button>
         </form></td>
+        <td></form>
         <td><form action="{% url 'admin_app:product_delete' product.id %}">
-        <button type="submit">Удалить</button>
-        </form></td>
+        <button type="submit">Удалить</button></td>
+        <td></form>
     </tr>
     {% endfor %}
     </tbody>

@@ -1,0 +1,8 @@
+{% extends "admin_app/base.html" %}
+
+{% block content %}
+    <h1>Удалить продукт ?/h1>
+    <form action="" method="post">{% csrf_token %}
+      <input type="submit" value="Удалить" />
+    </form>
+{% endblock content %}

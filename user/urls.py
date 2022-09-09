@@ -1,16 +1,17 @@
 from django.urls import path
 
-from .views import RegisterUser, logout_user, user_room, user_order_detail, order_cancel
-from .views import auth_view, verify_view
+from .views import RegisterUser, logout_user, LoginUser, UserRoom, \
+    UserOrderDetail, OrderCancel
+from .views import verify_view
 
 app_name = 'user'
 urlpatterns = [
     path('register/', RegisterUser.as_view(), name='register'),
-    path('login/', auth_view, name='login_view'),
+    path('login/', LoginUser.as_view(), name='login_view'),
     path('logout/', logout_user, name='logout'),
     path('verify/', verify_view, name='verify_view'),
-    path('user/<int:pk>/', user_room, name='user_room'),
-    path('user_order/<int:pk>/', user_order_detail, name='user_order_detail'),
-    path('order_cancel/<int:pk>/', order_cancel, name='order_cancel'),
+    path('user/<int:pk>/', UserRoom.as_view(), name='user_room'),
+    path('user_order/<int:pk>/', UserOrderDetail.as_view(), name='user_order_detail'),
+    path('user_order/<int:pk>/delete/', OrderCancel.as_view(), name='product_delete'),
 
 ]

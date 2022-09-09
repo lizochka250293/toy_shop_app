@@ -6,11 +6,18 @@
 <div class="product_detail_admin">
 <img class="img-product" src="{{product.poster.url}}">
 
-<form action="{% url 'admin_app:product_detail' product.id %}" method="post" enctype="multipart/form-data">
+<!--<form action="{% url 'admin_app:product_detail' product.url %}" method="post" enctype="multipart/form-data">-->
+<!--    {% csrf_token %}-->
+<!--    {{ form.as_p }}-->
+<!--    {{ form_image.as_p }}-->
+<!--    <button type="submit">Сохранить изменения</button></td>-->
+<!--</form>-->
+
+<form action="{% url 'admin_app:product_detail' product.url %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
-    {{ form_image.as_p }}
-    <button type="submit">Сохранить изменения</button></td>
+    {{ product_form.as_p }}
+    {{ image_form.as_p }}
+    <input type="submit" value="Сохранить изменения" />
 </form>
 </div>
 

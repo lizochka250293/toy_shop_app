@@ -1,5 +1,7 @@
 from django.shortcuts import redirect, get_object_or_404, render
+from django.urls import reverse
 from django.views.decorators.http import require_POST
+from django.views.generic import DeleteView
 
 from app_toy_shop.models import Product
 from .cart import Cart
