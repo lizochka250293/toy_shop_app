@@ -63,7 +63,8 @@ class ToyDetailAdminView(LoginRequiredMixin, UpdateView):
         print(image)
         context = super().get_context_data(**kwargs)
         context['product_form'] = ProductDetailForm(prefix='product_form_pre', instance=self.object)
-        context['image_form'] = ImageProductFormSet(prefix='image_form_pre', instance=self.object.product_image.all())
+        # context['image_form'] = ImageProductFormSet(prefix='image_form_pre', instance=self.object.product_image.all())
+        context['image_form'] = ImageProductFormSet(prefix='image_form_pre', instance=image)
         return context
 
     def post(self, request, *args, **kwargs):

@@ -1,9 +1,36 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 
 
 # Create your views here.
+from django.views.generic import DetailView
+
 from chat.models import ChatDialog, ChatMessage
 
+
+class Room(DetailView):
+    model = ChatDialog
+    pk_url_kwarg = "room_name"
+    template_name = 'chat/room.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['messages'] = ChatMessage.objects.select_related('user').filter(dialog_id=self.kwargs.get('room_name'))
+        return context
+
+    def get(self, request, *args, **kwargs):
+        print(self.kwargs.get('room_name'))
+        self.object = None
+        if self.request.user.is_superuser:
+            self.object = ChatDialog.objects.get(id=self.kwargs.get('room_name')).id
+        else:
+            try:
+                self.object = ChatDialog.objects.get(id=self.request.user.id)
+                print('cur', self.object)
+            except ChatDialog.DoesNotExist:
+                self.object = ChatDialog.objects.create(id=self.request.user.id, user_id=self.request.user.id)
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
 
 def room(request, room_name):
     """Комната"""
@@ -25,7 +52,6 @@ def room(request, room_name):
                 return render(request, 'chat/room.html', {
                     'room_name': room_name,
                     'cur_dialog': cur_dialog,
-                    'admin_message': admin_message
 
                 })
     else:
