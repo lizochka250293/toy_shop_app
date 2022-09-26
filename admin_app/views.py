@@ -222,7 +222,7 @@ class OrderListView(LoginRequiredMixin, ListView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class OrderDetail(LoginRequiredMixin, FormView, ListView):
+class OrderDetail(LoginRequiredMixin, FormView, UpdateView):
     """Детали заказа"""
     model = Order
     template_name = 'admin_app/order_detail.html'
@@ -235,17 +235,24 @@ class OrderDetail(LoginRequiredMixin, FormView, ListView):
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
-
     def get_context_data(self, **kwargs):
-        context = super(OrderDetail, self).get_context_data()
-        context['orders'] = Order.objects.get(id=self.kwargs.get('pk'))
-        print(context['orders'].order_status)
+        context = super().get_context_data(**kwargs)
+        self.object = Order.objects.get(id=self.kwargs.get('pk'))
         context['order'] = OrderItem.objects.filter(order_id=self.kwargs.get('pk'))
         context['product'] = Product.objects.all()
-        # context['form'] = self.form_class(self.request.GET, instance=context['orders'].order_status)
-        print(self.form_class)
-        # self.form_class(self.request.GET, instance=request.user)
+        context['form'] = OrderListForm(instance=self.object)
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        self.object = Order.objects.get(id=self.kwargs.get('pk'))
+        form = OrderListForm(request.POST)
+        if form.is_valid():
+            self.object.order_status = form.cleaned_data['order_status']
+            self.object.save()
+            return redirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data())
 
 
 @login_required

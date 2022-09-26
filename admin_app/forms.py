@@ -28,4 +28,4 @@ class ImageProductForm(forms.ModelForm):
 
 
 ImageProductFormSet = formset_factory(ImageProductForm, extra=3)
-ImageProductFormSetUpdate = formset_factory(ImageProductForm, extra=0)
+

@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
+from orders.models import Order
 from user.models import User
 
 
@@ -21,3 +22,9 @@ class LoginUserForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ('username', 'password')
+
+
+class OrderUserForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['order_status']

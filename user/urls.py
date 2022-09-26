@@ -12,6 +12,6 @@ urlpatterns = [
     path('verify/', verify_view, name='verify_view'),
     path('user/<int:pk>/', UserRoom.as_view(), name='user_room'),
     path('user_order/<int:pk>/', UserOrderDetail.as_view(), name='user_order_detail'),
-    path('user_order/<int:pk>/delete/', OrderCancel.as_view(), name='product_delete'),
+    path('user_order/<int:pk>/cancel/', OrderCancel.as_view(), name='order_cancel'),
 
 ]

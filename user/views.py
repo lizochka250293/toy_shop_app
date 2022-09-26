@@ -8,13 +8,13 @@ from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, DetailView, ListView, DeleteView
+from django.views.generic import CreateView, DetailView, ListView, DeleteView, UpdateView, FormView
 
 from app_toy_shop.models import Product
 from codes.forms import CodeForm
 from orders.models import Order, OrderItem
 from user.models import User
-from .forms import RegisterUserForm
+from .forms import RegisterUserForm, OrderUserForm
 
 
 class RegisterUser(CreateView):
@@ -145,11 +145,18 @@ class UserOrderDetail(LoginRequiredMixin, ListView):
 #     return render(request, 'user/user_room.html', {'orders': orders, 'user_id': request.user.id})
 
 
-class OrderCancel(LoginRequiredMixin, DeleteView):
+class OrderCancel(LoginRequiredMixin, FormView, UpdateView):
     """Аннулировать заказ"""
     model = Order
-    template_name = 'user/delete_order.html'
 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.order_status = '5'
+        self.object.save()
+        print(self.object.order_status)
+        return redirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse('user:user_room', kwargs={'pk': self.request.user.id})
+
+

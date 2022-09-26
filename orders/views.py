@@ -51,7 +51,6 @@ class OrderCreate(FormView, ListView):
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        print(self.get_form())
         self.object.user = self.request.user
         self.object.save()
         for item in self.cart:
@@ -60,6 +59,8 @@ class OrderCreate(FormView, ListView):
                                      price=item['price'],
                                      quantity=item['quantity'])
         self.cart.clear()
+        if form.cleaned_data['paid'] == '1':
+            return redirect('orders:add_pay')
         return HttpResponseRedirect(self.get_success_url())
 
 
