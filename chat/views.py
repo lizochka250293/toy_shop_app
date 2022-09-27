@@ -16,6 +16,8 @@ class Room(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context['messages'] = ChatMessage.objects.select_related('user').filter(dialog_id=self.kwargs.get('room_name'))
+        context['room_name'] = self.kwargs.get('room_name')
+        print('room_name', context['room_name'])
         return context
 
     def get(self, request, *args, **kwargs):

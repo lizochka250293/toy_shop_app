@@ -1,7 +1,7 @@
 from django import forms
 
 from app_toy_shop.models import Product, Image
-from django.forms import formset_factory
+from django.forms import formset_factory, modelformset_factory
 
 
 class ProductDetailForm(forms.ModelForm):
@@ -28,4 +28,5 @@ class ImageProductForm(forms.ModelForm):
 
 
 ImageProductFormSet = formset_factory(ImageProductForm, extra=3)
+ImageFormSet = modelformset_factory(Image, fields=('link',), extra=3)
 

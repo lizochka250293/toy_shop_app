@@ -8,7 +8,7 @@ from django.views.generic.edit import UpdateView, CreateView, DeleteView, FormVi
 from transliterate import translit
 
 # Create your views here.
-from admin_app.forms import ProductDetailForm, StocksForm, ImageProductForm, ImageProductFormSet
+from admin_app.forms import ProductDetailForm, StocksForm, ImageProductForm, ImageProductFormSet, ImageFormSet
 from app_toy_shop.models import Product, Image
 from chat.models import ChatDialog
 from orders.form import OrderListForm
@@ -54,36 +54,46 @@ class ToyDetailAdminView(LoginRequiredMixin, UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        print(self.object.product_image.all())
-        dict = {}
-        for i in self.object.product_image.all():
-            dict['link'] = {}
-        print(self.object.id)
-        image = Image.objects.filter(product_id=self.object.id)
-        print(image)
         context = super().get_context_data(**kwargs)
-        context['product_form'] = ProductDetailForm(prefix='product_form_pre', instance=self.object)
-        # context['image_form'] = ImageProductFormSet(prefix='image_form_pre', instance=self.object.product_image.all())
-        context['image_form'] = ImageProductFormSet(prefix='image_form_pre', instance=image)
+        self.product = Product.objects.get(url=self.kwargs.get('slug'))
+        self.images = Image.objects.filter(product_id=self.product.id)
+        context['product_form'] = ProductDetailForm(prefix='product_form_pre', instance=self.product)
+        context['image_form'] = ImageFormSet(queryset=Image.objects.filter(product_id=self.product.id))
         return context
 
     def post(self, request, *args, **kwargs):
-        self.object = None
+        self.object = Product.objects.get(url=self.kwargs.get('slug'))
         product_form = ProductDetailForm(request.POST, request.FILES, prefix='product_form_pre')
         image_form = ImageProductFormSet(request.POST, request.FILES, prefix='image_form_pre')
-        if product_form.is_valid() and image_form.is_valid():
-            self.object = product_form.save(commit=False)
+        if product_form.is_valid():
+            self.object.name = product_form.cleaned_data['name']
+            self.object.description = product_form.cleaned_data['description']
+            self.object.price = product_form.cleaned_data['price']
+            self.object.category = product_form.cleaned_data['category']
+            self.object.quantity = product_form.cleaned_data['quantity']
+            self.object.is_active = product_form.cleaned_data['is_active']
+            if product_form.cleaned_data['poster'] != None:
+                self.object.poster = product_form.cleaned_data['poster']
             self.object.save()
-            for p in image_form:
-                product_image = p.save(commit=False)
-                link = p.cleaned_data.get('link')
-                if link is not None:
-                    product_image.product_id = self.object.id
-                    product_image.link = link
-                    product_image.save()
+        print(image_form.errors)
+        if image_form.is_valid():
+            print('ok')
+        #     self.images.delete()
+        #     print('id', self.product.id)
+        #     # product_id = Product.objects.get(name=product.name).id
+        #     for image_f in image_form:
+        #         print(image_f)
+        #         product_image = image_f.save(commit=False)
+        #         link = image_f.cleaned_data.get('link')
+        #         if link is not None:
+        #             product_image.product_id = self.object.id
+        #             product_image.link = link
+        #             product_image.save()
+
             return redirect(self.get_success_url())
         else:
-            return self.render_to_response(self.get_context_data(product_form=product_form, image_form=image_form))
+            print('no')
+            return self.render_to_response(self.get_context_data(product_form=product_form))
 
 
 def product_detail(request, pk):

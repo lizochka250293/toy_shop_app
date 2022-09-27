@@ -26,7 +26,7 @@
             <div class="chat__input">
                 <textarea name="message" id="id_message" rows="10" placeholder="Текст сообщения"></textarea>
                 <button type="submit" id="btn-send">Отправить</button>
-                {{ room_name|json_script:"room-name" }}
+                {{ room_name|json_script:"room_name" }}
                 {% if request.user.is_superuser %}
                 <button id="close-chat" type="button">Завершить диалог</button>
                 {% endif %}
@@ -35,7 +35,8 @@
     </main>
 </div>
     <script>
-        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        const roomName = JSON.parse(document.getElementById('room_name').textContent);
+        console.log('roomName - ', roomName)
         const listMessage = document.getElementById('list_message')
         document.getElementById('btn-send').addEventListener('click', sendMessage)
 
