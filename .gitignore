@@ -1,3 +1,17 @@
 .idea/
 venv/
 base_2.html
+idea
+.DS_Store
+
+**/
+.installed.cfg
+*.egg
+
+venv
+
+__pycache__/
+*/__pycache__/
+**[cod]
+.pyc
+*.pyc
