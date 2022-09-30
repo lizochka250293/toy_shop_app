@@ -58,13 +58,14 @@ class ToyDetailAdminView(LoginRequiredMixin, UpdateView):
         self.product = Product.objects.get(url=self.kwargs.get('slug'))
         self.images = Image.objects.filter(product_id=self.product.id)
         context['product_form'] = ProductDetailForm(prefix='product_form_pre', instance=self.product)
-        context['image_form'] = ImageFormSet(queryset=Image.objects.filter(product_id=self.product.id))
+        context['image_form'] = ImageFormSet(queryset=Image.objects.filter(product_id=self.product.id),
+                                             prefix='image_form_pre')
         return context
 
     def post(self, request, *args, **kwargs):
         self.object = Product.objects.get(url=self.kwargs.get('slug'))
         product_form = ProductDetailForm(request.POST, request.FILES, prefix='product_form_pre')
-        image_form = ImageProductFormSet(request.POST, request.FILES, prefix='image_form_pre')
+        image_form = ImageFormSet(request.POST, request.FILES, prefix='image_form_pre')
         if product_form.is_valid():
             self.object.name = product_form.cleaned_data['name']
             self.object.description = product_form.cleaned_data['description']
@@ -75,24 +76,18 @@ class ToyDetailAdminView(LoginRequiredMixin, UpdateView):
             if product_form.cleaned_data['poster'] != None:
                 self.object.poster = product_form.cleaned_data['poster']
             self.object.save()
-        print(image_form.errors)
+
         if image_form.is_valid():
-            print('ok')
-        #     self.images.delete()
-        #     print('id', self.product.id)
-        #     # product_id = Product.objects.get(name=product.name).id
-        #     for image_f in image_form:
-        #         print(image_f)
-        #         product_image = image_f.save(commit=False)
-        #         link = image_f.cleaned_data.get('link')
-        #         if link is not None:
-        #             product_image.product_id = self.object.id
-        #             product_image.link = link
-        #             product_image.save()
+            for image_f in image_form:
+                product_image = image_f.save(commit=False)
+                link = image_f.cleaned_data.get('link')
+                if link is not None:
+                    product_image.product_id = self.object.id
+                    product_image.link = link
+                    product_image.save()
 
             return redirect(self.get_success_url())
         else:
-            print('no')
             return self.render_to_response(self.get_context_data(product_form=product_form))
 
 

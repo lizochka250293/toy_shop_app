@@ -28,5 +28,6 @@ class ImageProductForm(forms.ModelForm):
 
 
 ImageProductFormSet = formset_factory(ImageProductForm, extra=3)
-ImageFormSet = modelformset_factory(Image, fields=('link',), extra=3)
+ImageFormSet = modelformset_factory(Image, fields=('link',), extra=3, max_num=3, min_num=1)
+
 
