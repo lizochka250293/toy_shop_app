@@ -1,4 +1,4 @@
-# Чат поддержки сотрудников
+# Магазин игрушек
 
 ## Backend:
 Python 3.10, Django Channels, POSTGRES
