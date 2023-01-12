@@ -1,6 +1,15 @@
 version: "3.9"
 
 services:
+  db:
+    image: postgres
+    container_name: db_toy_shop
+    volumes:
+      - db_toy_shop_vol:/var/lib/postgresql/data
+    env_file:
+      - .env.dev
+    ports:
+      - 5432:5432
   redis:
     image: redis
     restart: always
@@ -26,3 +35,6 @@ services:
       - redis
       - webapp
     command: 'celery -A toy_shop worker -l info'
+
+volumes:
+  db_toy_shop_vol:

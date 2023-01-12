@@ -3,6 +3,7 @@ venv/
 base_2.html
 idea
 .DS_Store
+.env.dev
 
 **/
 .installed.cfg
