@@ -1,7 +1,7 @@
 # Магазин игрушек
 
 ## Backend:
-Python 3.10, Django Channels, POSTGRES
+Python 3.10, Django, POSTGRES
 
 Подробный перечень используемых библиотек находятся в файле requirements.txt
 
@@ -14,7 +14,6 @@ Python 3.10, Django Channels, POSTGRES
   - корзина
   - поиск и фильтр
   - оплата
-      - без нал
       - заглушка
   - отзывы
   - оценка товара
