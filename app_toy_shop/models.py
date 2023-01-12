@@ -3,6 +3,7 @@ from django.urls import reverse
 
 
 class Category(models.Model):
+    """Модель категорий"""
     name = models.CharField('Категория', max_length=70, db_index=True)
     url = models.SlugField(max_length=170, unique=True)
 
@@ -15,6 +16,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    """Модель продукта"""
     name = models.CharField('Название', max_length=70)
     description = models.TextField('Описание')
     price = models.DecimalField('Цена', max_digits=7, decimal_places=2)
@@ -37,6 +39,7 @@ class Product(models.Model):
 
 
 class Image(models.Model):
+    """Модель изображения продукта"""
     link = models.ImageField('Изображение', upload_to='photos/', blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Продукт', related_name="product_image")
 
@@ -45,8 +48,8 @@ class Image(models.Model):
         verbose_name_plural = 'Изображения'
 
 
-
 class Star(models.Model):
+    """Модель звезд"""
     star = models.PositiveSmallIntegerField('Звезда', default=1)
 
     def __str__(self):
@@ -59,6 +62,7 @@ class Star(models.Model):
 
 
 class StarForProduct(models.Model):
+    """Модель звезд продукта"""
     ip = models.CharField('IP', max_length=20)
     star = models.ForeignKey(Star, on_delete=models.CASCADE, verbose_name='Звезда', related_name="star_star")
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Продукт', related_name="product_star")
@@ -72,6 +76,7 @@ class StarForProduct(models.Model):
 
 
 class Reviews(models.Model):
+    """Модель отзывов"""
     description = models.TextField('Отзыв')
     user = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True, verbose_name='Пользователь',
                              related_name="user_reviews")

@@ -1,8 +1,8 @@
 from django.db import models
 
-# Create your models here.
 
 class ChatDialog(models.Model):
+    """Модель чатов пользователей"""
     start_date = models.DateTimeField('Дата создания', auto_now=True)
     is_active = models.BooleanField('Активность', default=False)
     user = models.ForeignKey('user.User', on_delete=models.CASCADE, verbose_name='пользователь',
@@ -20,6 +20,7 @@ class ChatDialog(models.Model):
 
 
 class ChatMessage(models.Model):
+    """Модель диалога"""
     user = models.ForeignKey(
         'user.User',
         on_delete=models.CASCADE,

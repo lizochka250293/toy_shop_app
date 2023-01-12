@@ -5,6 +5,7 @@ from app_toy_shop.models import Product
 
 
 class Order(models.Model):
+    """Модель оплаты"""
     PAYMENT_METHOD = (
         ('1', 'Оплата картой на сайте'),
         ('2', 'Оплата картой при получении'),
@@ -37,13 +38,12 @@ class Order(models.Model):
         return sum(item.get_cost() for item in self.items.all())
 
 
-
 class OrderItem(models.Model):
+    """Модель деталей заказа"""
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_items')
     price = models.DecimalField('Цена', max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField('Колличество', default=1)
-
 
     def __str__(self):
         return '{}'.format(self.id)
@@ -57,6 +57,7 @@ class OrderItem(models.Model):
 
 
 class PayStatus(models.Model):
+    """Модель статуса оплаты"""
     PAYMENT_STATUS = (
         ('1', 'Не оплаченно'),
         ('2', 'Оплата прошла успешно'),

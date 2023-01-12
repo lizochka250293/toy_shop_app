@@ -9,6 +9,7 @@ from chat.models import ChatDialog, ChatMessage
 
 
 class Room(DetailView):
+    """Представление чатов"""
     model = ChatDialog
     pk_url_kwarg = "room_name"
     template_name = 'chat/room.html'
@@ -17,11 +18,9 @@ class Room(DetailView):
         context = super().get_context_data()
         context['messages'] = ChatMessage.objects.select_related('user').filter(dialog_id=self.kwargs.get('room_name'))
         context['room_name'] = self.kwargs.get('room_name')
-        print('room_name', context['room_name'])
         return context
 
     def get(self, request, *args, **kwargs):
-        print(self.kwargs.get('room_name'))
         self.object = None
         if self.request.user.is_superuser:
             self.object = ChatDialog.objects.get(id=self.kwargs.get('room_name')).id
@@ -34,8 +33,9 @@ class Room(DetailView):
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
 
+
 def room(request, room_name):
-    """Комната"""
+    """Модель комнаты"""
     if request.user.is_authenticated:
         if request.user.is_superuser:
             cur_dialog = ChatDialog.objects.get(id=room_name).id
@@ -50,7 +50,6 @@ def room(request, room_name):
             except ChatDialog.DoesNotExist:
                 cur_dialog = ChatDialog.objects.create(id=request.user.id, user_id=request.user.id)
                 admin_message = ChatMessage.objects.get(dialog_id='5')
-                print(cur_dialog)
                 return render(request, 'chat/room.html', {
                     'room_name': room_name,
                     'cur_dialog': cur_dialog,

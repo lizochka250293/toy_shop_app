@@ -11,7 +11,6 @@ from .models import Product, Category, StarForProduct
 
 class GetCategory:
     """Все категории"""
-
     def get_category(self):
         return Category.objects.all()
 
@@ -78,9 +77,7 @@ class AddStarRating(View):
 
     def post(self, request):
         form = RatingForm(request.POST)
-        print(int(request.POST.get("star")))
         if form.is_valid():
-            print('ok')
             StarForProduct.objects.update_or_create(
                 ip=self.get_client_ip(request),
                 product_id=int(request.POST.get("product")),

@@ -35,12 +35,8 @@ def logout_user(request):
     return redirect('/')
 
 
-@login_required
-def home_view(request):
-    return render(request, 'temp/main.html', {})
-
-
 class LoginUser(LoginView):
+    """Авторизация пользователя"""
     form_class = AuthenticationForm
     template_name = 'temp/auth.html'
 
@@ -52,19 +48,6 @@ class LoginUser(LoginView):
 
     def get_success_url(self):
         return reverse_lazy('user:verify_view')
-
-
-# def auth_view(request):
-#     """Авторизация"""
-#     form = AuthenticationForm()
-#     if request.method == 'POST':
-#         username = request.POST.get('username')
-#         password = request.POST.get('password')
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             request.session['pk'] = user.pk
-#             return redirect('user:verify_view')
-#     return render(request, 'temp/auth.html', {'form': form})
 
 
 def verify_view(request):
@@ -101,16 +84,6 @@ class UserRoom(LoginRequiredMixin, DetailView):
         return context
 
 
-# @login_required
-# def user_room(request, pk):
-#     """Личный кабинет с заказами"""
-#     if request.user.id == pk:
-#         orders = Order.objects.filter(user_id=pk)
-#         return render(request, 'user/user_room.html', {'orders': orders, 'user_id': request.user.id})
-#     else:
-#         return redirect('user:login_view')
-
-
 class UserOrderDetail(LoginRequiredMixin, ListView):
     """Детали заказа"""
     model = OrderItem
@@ -124,25 +97,6 @@ class UserOrderDetail(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['product'] = Product.objects.all()
         return context
-
-
-# @login_required
-# def user_order_detail(request, pk):
-#     """Детали заказа"""
-#     order_items = OrderItem.objects.filter(order_id=pk)
-#     order = Order.objects.filter(id=pk)
-#     product = Product.objects.all()
-#     return render(request, 'user/user_order_detail.html', {'order': order_items, 'product': product})
-
-
-# @login_required
-# def order_cancel(request, pk):
-#     """Аннулировать заказ"""
-#
-#     order = Order.objects.get(id=pk)
-#     orders = Order.objects.filter(user_id=order.user_id)
-#     order.delete()
-#     return render(request, 'user/user_room.html', {'orders': orders, 'user_id': request.user.id})
 
 
 class OrderCancel(LoginRequiredMixin, FormView, UpdateView):
