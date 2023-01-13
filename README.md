@@ -1,7 +1,7 @@
 # Магазин игрушек
 
 ## Backend:
-Python 3.10, Django, POSTGRES, Redis
+Python 3.10, Django, POSTGRES, Redis, Celery
 
 Подробный перечень используемых библиотек находятся в файле requirements.txt
 
